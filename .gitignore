@@ -1,1 +1,14 @@
 .DS_Store
+.env
+
+# Terraform
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Ansible 
+*.retry
+
