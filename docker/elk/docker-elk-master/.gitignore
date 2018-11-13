@@ -1,0 +1,8 @@
+# .env
+.env
+
+# htaccess
+htpasswd.users
+
+#vscode
+.vscode

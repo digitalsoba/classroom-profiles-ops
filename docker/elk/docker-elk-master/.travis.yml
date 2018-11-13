@@ -1,0 +1,28 @@
+language: minimal
+services: docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.14.0
+
+install:
+  # Install Docker Compose
+  - curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o "$HOME/bin/docker-compose"
+  - chmod +x "$HOME/bin/docker-compose"
+  - docker-compose --version
+
+before_script:
+  # Build images
+  - docker-compose build
+
+  # Pull buildpack image (curl 7.52.0+)
+  - docker pull buildpack-deps:artful-curl
+  - shopt -s expand_aliases
+  - alias curl='docker run --rm --net=host buildpack-deps:artful-curl curl'
+
+script:
+  # Compose
+  - docker-compose up -d
+  - sleep 60
+  - docker-compose ps
+  - docker-compose logs
+  - docker-compose down -v
