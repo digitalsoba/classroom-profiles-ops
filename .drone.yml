@@ -7,8 +7,7 @@ steps:
   commands:
   - ls
 
-- name: test
-  image: plugins/docker
+- name: Test docker build
   commands:
   - cd docker/dev/
   - docker build -t test .
