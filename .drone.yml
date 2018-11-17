@@ -2,14 +2,8 @@ kind: pipeline
 name: default
 
 steps:
-- name: frontend
-  image: node
+- name: test
+  image: alpine
   commands:
-  - npm install
-  - npm test
+  - ls
 
-- name: backend
-  image: golang
-  commands:
-  - go build
-  - go test
