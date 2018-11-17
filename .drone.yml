@@ -6,8 +6,3 @@ steps:
   image: alpine
   commands:
   - ls
-
-- name: Test docker build
-  commands:
-  - cd docker/dev/
-  - docker build -t test .
