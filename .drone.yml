@@ -2,8 +2,13 @@ kind: pipeline
 name: default
 
 steps:
-- name: test
+- name: list dirs
   image: alpine
   commands:
   - ls
 
+- name: test
+  image: plugins/docker
+  commands:
+  - cd docker/dev/
+  - docker build -t test .
