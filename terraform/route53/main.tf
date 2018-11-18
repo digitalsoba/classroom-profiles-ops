@@ -16,6 +16,24 @@ terraform {
   }
 }
 
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
+
+  config {
+    bucket = "matabit-terraform-backend"
+    region = "us-west-2"
+    key    = "vpc/terraform.tfstate"
+    name   = "vpc/terraform.tfstate"
+  }
+}
 resource "aws_route53_zone" "zone" {
   name = "matabit.org"
+}
+
+resource "aws_route53_record" "ssh" {
+  zone_id = "${aws_route53_zone.zone.zone_id}"
+  name    = "ssh"
+  type    = "A"
+  ttl     = "300"
+  records = ["${data.terraform_remote_state.vpc.nat_eip}"]
 }
