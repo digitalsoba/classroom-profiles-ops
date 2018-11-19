@@ -1,2 +1,3 @@
 # Ops repo for senior design
-[![Build Status](https://drone.matabit.org/api/badges/digitalsoba/classroom-profiles-ops/status.svg)](https://drone.matabit.org/digitalsoba/classroom-profiles-ops)
+[![Build Status](https://drone.neptunesgrip.com/api/badges/digitalsoba/classroom-profiles-ops/status.svg)](https://drone.neptunesgrip.com/digitalsoba/classroom-profiles-ops)
+
