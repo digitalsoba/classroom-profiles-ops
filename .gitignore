@@ -1,5 +1,6 @@
+# Mac stuff
 .DS_Store
-.env
+
 
 # Terraform
 # Local .terraform directories
@@ -11,5 +12,7 @@
 
 # Ansible 
 *.retry
+hosts.ini
 
+# Environment files
 .env
