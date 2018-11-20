@@ -20,6 +20,6 @@ resource "aws_lightsail_instance" "matabit_drone" {
   name              = "matabit-drone"
   availability_zone = "us-west-2a"
   blueprint_id      = "ubuntu_18_04"
-  bundle_id         = "nano_2_0"
+  bundle_id         = "micro_2_0"
   key_pair_name     = "anthony"
 }

@@ -1,0 +1,62 @@
+
+--- 
+- name: Update the repository cache on Ubuntu
+  become: true
+  apt: 
+    update_cache: true
+
+- name: Install Docker dependencies 
+  become: true
+  apt: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apache2-utils
+    - apt-transport-https
+    - ca-certificates 
+    - curl
+    - software-properties-common
+    - unzip
+    - zip
+
+- name: Add Docker's official GPG key
+  become: true 
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Stable Docker repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable
+    state: present
+    update_cache: true 
+
+- name: Install Docker
+  apt:
+    name: docker-ce
+    state: present 
+
+- name: Enable docker on systemd
+  systemd:
+    name: docker
+    enabled: yes
+    
+- name: Install python-pip
+  become: true
+  apt:
+    name: python3-pip
+    state: present 
+
+- name: Install docker-compose with pip
+  become: true
+  pip:
+    name: docker-compose
+ 
+- name: Add users to docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  with_items:
+    - ubuntu
+    

@@ -10,7 +10,7 @@ services:
         - '443:443'
     volumes:
         - '/var/run/docker.sock:/var/run/docker.sock'
-        - './var/lib/drone:/data'
+        - '/var/lib/drone:/data'
     environment:
         - DRONE_GITHUB_SERVER=https://github.com
         - DRONE_GITHUB_CLIENT_ID=$CLIENT_ID
@@ -19,3 +19,4 @@ services:
         - DRONE_SERVER_HOST=$SERVER_HOST
         - DRONE_SERVER_PROTO=https
         - DRONE_TLS_AUTOCERT=true
+        - DRONE_USER_FILTER=CSUN-Comp490, digitalsoba

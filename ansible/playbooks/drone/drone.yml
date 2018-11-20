@@ -1,0 +1,7 @@
+---
+- name: Install Drone.io
+  hosts: drone
+  become: true
+  roles:
+    - docker
+    - drone

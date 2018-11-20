@@ -1,0 +1,18 @@
+---
+  - name: Create drone directory
+    file:
+      path: /etc/drone
+      state: directory
+  
+  - name: Copy docker-compose.yml file to /etc/drone
+    copy:
+      src: ../../../docker/drone/docker-compose.yml
+      dest: /etc/drone
+
+  - name: Copy env file to /etc/drone
+    copy:
+      src: ../../../docker/drone/.env
+      dest: /etc/drone
+
+  - name: Run docker-compose.yml in /etc/drone directory
+    command: chdir=/etc/drone docker-compose up -d --build
