@@ -20,3 +20,4 @@ services:
         - DRONE_SERVER_PROTO=https
         - DRONE_TLS_AUTOCERT=true
         - DRONE_USER_FILTER=CSUN-Comp490, digitalsoba
+        - DRONE_USER_CREATE=username:digitalsoba,machine:false,admin:true
