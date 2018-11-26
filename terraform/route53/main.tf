@@ -2,6 +2,11 @@ variable "aws_region" {
   default = "us-west-2"
 }
 
+variable "rds_address" {
+  default = "matabit.cyxko5chikoa.us-west-2.rds.amazonaws.com"
+}
+
+
 provider "aws" {
   region = "${var.aws_region}"
 }
@@ -36,4 +41,12 @@ resource "aws_route53_record" "ssh" {
   type    = "A"
   ttl     = "300"
   records = ["${data.terraform_remote_state.vpc.nat_eip}"]
+}
+
+resource "aws_route53_record" "db" {
+  zone_id = "${aws_route53_zone.zone.zone_id}"
+  name    = "db"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${var.rds_address}"]
 }

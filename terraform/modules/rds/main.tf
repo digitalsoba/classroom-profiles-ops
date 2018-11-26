@@ -99,3 +99,4 @@ resource "aws_db_instance" "mysql" {
     Name = "rds = ${var.rds-name}"
   }
 }
+
