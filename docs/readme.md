@@ -1,3 +1,4 @@
-# Hello
-[Terraform](terraform)
-[Drone.io](drone)
+# Documentation for the project
+
+- [Terraform](terraform)
+- [Drone.io](drone)
