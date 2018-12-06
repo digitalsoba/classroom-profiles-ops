@@ -6,3 +6,8 @@ steps:
   image: alpine
   commands:
   - ls
+
+- name: Build Dockerfile
+  image: plugins/docker
+  settings:
+    dockerfile: docker/dev/Dockerfile
