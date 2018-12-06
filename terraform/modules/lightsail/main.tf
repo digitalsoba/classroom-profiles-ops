@@ -1,4 +1,4 @@
-variable "lightsail_name" {
+variable "name" {
   description = "Name of the lightsail instance"
 }
 
@@ -19,7 +19,7 @@ variable "key_pair_name" {
 }
 
 resource "aws_lightsail_instance" "lightsail-module" {
-  name              = "${var.lightsail_name}"
+  name              = "${var.name}"
   availability_zone = "${var.availability_zone}"
   blueprint_id      = "${var.blueprint_id}"
   bundle_id         = "${var.bundle_id}"

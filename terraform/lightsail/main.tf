@@ -16,11 +16,19 @@ terraform {
   }
 }
 
-module "lightsail_dev" {
-  source            = "../modules/lightsail"
-  lightsail_name    = "matabit-dev"
+resource "aws_lightsail_instance" "matabit_dev" {
+  name              = "matabit-dev"
   availability_zone = "us-west-2a"
   blueprint_id      = "ubuntu_18_04"
   bundle_id         = "nano_2_0"
   key_pair_name     = "anthony"
+}
+
+resource "aws_lightsail_static_ip" "matabit_dev" {
+  name = "dev.matabit.org"
+}
+
+resource "aws_lightsail_static_ip_attachment" "matabit_dev" {
+  static_ip_name = "${aws_lightsail_static_ip.matabit_dev.name}"
+  instance_name  = "${aws_lightsail_instance.matabit_dev.name}"
 }
