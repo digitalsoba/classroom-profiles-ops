@@ -6,7 +6,6 @@ variable "rds_address" {
   default = "matabit.cyxko5chikoa.us-west-2.rds.amazonaws.com"
 }
 
-
 provider "aws" {
   region = "${var.aws_region}"
 }
@@ -31,6 +30,7 @@ data "terraform_remote_state" "vpc" {
     name   = "vpc/terraform.tfstate"
   }
 }
+
 resource "aws_route53_zone" "zone" {
   name = "matabit.org"
 }
