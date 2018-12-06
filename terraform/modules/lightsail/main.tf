@@ -18,7 +18,7 @@ variable "key_pair_name" {
   default = "SSH Key pair for default user"
 }
 
-resource "aws_lightsail_instance" "matabit_drone" {
+resource "aws_lightsail_instance" "lightsail-module" {
   name              = "${var.lightsail_name}"
   availability_zone = "${var.availability_zone}"
   blueprint_id      = "${var.blueprint_id}"
