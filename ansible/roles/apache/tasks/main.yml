@@ -1,0 +1,29 @@
+---
+- name: Update the repository cache on Ubuntu
+  apt: 
+    update_cache: true
+
+- name: Install apache2
+  apt: 
+    name: apache2
+    state: present 
+
+- name: Copy Apache config
+  template:
+    src: dev.conf
+    dest: /etc/apache2/sites-available/dev.conf
+
+- name: Disable default site Dev
+  command: a2dissite 000-default.conf
+
+- name: Enable Dev
+  command: a2ensite dev.conf
+  
+- name: Enable Apache ReWrite
+  apache2_module:
+    state: present
+    name: rewrite
+  notify: 
+    - restart apache
+
+
