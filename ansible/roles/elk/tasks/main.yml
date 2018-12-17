@@ -1,0 +1,72 @@
+---
+
+- name: Install add-apt-repostory
+  become: yes
+  apt: 
+    name: software-properties-common 
+    state: latest
+
+- name: Install Java repo
+  apt_repository:
+    repo: ppa:webupd8team/java
+    state: present
+
+- name: Add Elastic GPG key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Elastic source list
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
+    state: present
+
+- name: Accept Java 8 License
+  become: yes
+  debconf: 
+    name: 'oracle-java8-installer' 
+    question: 'shared/accepted-oracle-license-v1-1' 
+    value: 'true' 
+    vtype: 'select'
+
+- name: Update apt cache and install stack
+  apt:
+    update_cache: yes
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - oracle-java8-installer
+      - elasticsearch
+      - kibana
+      - nginx
+      - logstash
+      - filebeat
+
+- name: Add elasticsearch yml
+  template:
+    src: elasticsearch.yml
+    dest: /etc/elasticsearch/elasticsearch.yml
+
+- name: Add Logstash pipelines
+  template:
+    src: "{{ item.src }}"
+    dest: /etc/logstash/conf.d/
+  with_items:
+    - {src: 02-beats-input.conf}
+    - {src: 10-syslog-filter.conf}
+    - {src: 11-apache2-filter.conf}
+    - {src: 30-elasticsearch-output.conf}
+  notify:
+    - Enable elk services
+    - Start elk services
+
+- name: Add nginx kibana proxy template
+  template: 
+    src: nginx.default
+    dest: /etc/nginx/sites-available/default
+  notify:
+    - Restart nginx
+
+- name: Load filebeat index and dashboards
+  include_role:
+    name: elk-load

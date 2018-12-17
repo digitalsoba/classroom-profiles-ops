@@ -1,0 +1,22 @@
+--- 
+- name: Install filebeat
+  apt:
+    name: filebeat
+    state: present
+
+- name: Add filebeat template
+  template:
+    src: filebeat.yml
+    dest: /etc/filebeat/
+
+- name: Enable filebeat modules
+  command: filebeat modules enable "{{ item }}"
+  with_items:
+    - system
+    - apache2
+
+- name: Load filebeat index and dashboard
+  command: "{{ item }}"
+  with_items: 
+  - filebeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["localhost:9200"]'
+  - filebeat setup -e -E output.logstash.enabled=false -E output.elasticsearch.hosts=['localhost:9200'] -E setup.kibana.host=localhost:5601

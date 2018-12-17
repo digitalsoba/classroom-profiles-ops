@@ -1,0 +1,6 @@
+---
+- name: Deploy ELK beats
+  hosts: elk-beats
+  become: true
+  roles:
+    - elk-beats
