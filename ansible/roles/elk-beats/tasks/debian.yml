@@ -1,0 +1,37 @@
+---
+- name: Install add-apt-repostory
+  become: yes
+  apt: 
+    name: software-properties-common 
+    state: latest
+
+- name: Add Elastic GPG key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Elastic source list
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
+    state: present
+
+- name: Update apt cache and install stack
+  apt:
+    update_cache: yes
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - filebeat
+
+- name: Add filebeat.yml config
+  template:
+    src: filebeat.yml
+    dest: /etc/filebeat/
+
+- name: Enable filebeat modules
+  command: filebeat modules enable "{{ item }}"
+  with_items:
+    - system
+    - apache2
+  notify:
+    - Start and enable filebeat
