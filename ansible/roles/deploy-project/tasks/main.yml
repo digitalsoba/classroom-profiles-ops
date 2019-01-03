@@ -4,9 +4,9 @@
     repo: https://github.com/CSUN-Comp490/classroom-profiles.git
     dest: /var/www/dev/laravel
 
-- name: Composer install
+- name: Composer update
   composer:
-    command: install
+    command: update
     working_dir: /var/www/dev/laravel
 
 - name: Copy .env file
@@ -31,5 +31,10 @@
     src: /var/www/dev/laravel/public
     dest: /var/www/dev/public
     state: link
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
 
     

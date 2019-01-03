@@ -44,7 +44,7 @@
 
 - name: Add elasticsearch yml
   template:
-    src: elasticsearch.yml
+    src: elasticsearch.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
 
 - name: Add Logstash pipelines
@@ -55,18 +55,26 @@
     - {src: 02-beats-input.conf}
     - {src: 10-syslog-filter.conf}
     - {src: 11-apache2-filter.conf}
+    - {src: 12-nginx-filter.conf}
     - {src: 30-elasticsearch-output.conf}
-  notify:
-    - Enable elk services
-    - Start elk services
+    
+- name: Start Elastic Stack
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - elasticsearch
+    - kibana
+    - logstash
+
+- name: Wait for elasticsearch to start
+  wait_for:
+    port: 9200
+    delay: 60
 
 - name: Add nginx kibana proxy template
   template: 
-    src: nginx.default
+    src: nginx.default.j2
     dest: /etc/nginx/sites-available/default
-  notify:
-    - Restart nginx
-
-- name: Load filebeat index and dashboards
-  include_role:
-    name: elk-load
+  notify: restart-nginx

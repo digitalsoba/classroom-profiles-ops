@@ -1,23 +1,5 @@
 ---
-- name: Enable elk services
-  service:
-    name: "{{ item }}"
-    enabled: yes
-  with_items:
-    - elasticsearch
-    - kibana
-    - logstash
-
-- name: Start elk services
-  service:
-    name: "{{ item }}"
-    state: started
-  with_items:
-    - elasticsearch
-    - kibana
-    - logstash
-
-- name: Restart nginx
+- name: restart-nginx
   service:
     name: nginx
     state: restarted

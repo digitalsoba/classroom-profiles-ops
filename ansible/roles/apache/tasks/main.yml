@@ -26,4 +26,6 @@
   notify: 
     - restart apache
 
-
+- name: include php apache modules
+  include_role: 
+    name: php-apache
