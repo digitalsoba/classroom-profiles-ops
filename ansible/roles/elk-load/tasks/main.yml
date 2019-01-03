@@ -14,6 +14,7 @@
   with_items:
     - system
     - apache2
+    - nginx
 
 - name: Load filebeat index and dashboard
   command: "{{ item }}"

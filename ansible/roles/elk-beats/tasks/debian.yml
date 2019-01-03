@@ -27,11 +27,13 @@
   template:
     src: filebeat.yml
     dest: /etc/filebeat/
-
+  notify: Restart filebeat
+  
 - name: Enable filebeat modules
   command: filebeat modules enable "{{ item }}"
   with_items:
     - system
     - apache2
+    - nginx
   notify:
     - Start and enable filebeat

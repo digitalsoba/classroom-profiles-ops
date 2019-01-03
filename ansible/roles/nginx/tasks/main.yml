@@ -1,0 +1,26 @@
+---
+- name: Update the repository cache on Ubuntu
+  apt: 
+    update_cache: true
+
+- name: Install nginx
+  apt: 
+    name: nginx
+    state: present 
+
+- name: Copy nginx config
+  template:
+    src: laravel.j2
+    dest: /etc/nginx/sites-available/dev
+
+- name: Remove default syslink
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Create dev syslink
+  file:
+    src: /etc/nginx/sites-available/dev
+    dest: /etc/nginx/sites-enabled/dev
+    state: link
+  notify: restart nginx

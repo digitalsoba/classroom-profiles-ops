@@ -4,3 +4,8 @@
     name: filebeat
     state: started
     enabled: yes
+
+- name: Restart filebeat
+  service:
+    name: filebeat
+    state: restarted
