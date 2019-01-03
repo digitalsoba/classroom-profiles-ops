@@ -2,14 +2,6 @@ variable "aws_region" {
   default = "us-west-2"
 }
 
-variable "rds_address" {
-  default = "matabit.cyxko5chikoa.us-west-2.rds.amazonaws.com"
-}
-
-variable "matabit_dev" {
-  default = "54.187.203.190"
-}
-
 provider "aws" {
   region = "${var.aws_region}"
 }
@@ -33,15 +25,17 @@ data "terraform_remote_state" "vpc" {
     key    = "vpc/terraform.tfstate"
   }
 }
-data "terraform_remote_state" "lightsail" {
+
+data "terraform_remote_state" "rds" {
   backend = "s3"
 
-  config {
+  config{
     bucket = "matabit-terraform-backend"
     region = "us-west-2"
-    key    = "lightsail/terraform.tfstate"
+    key    = "rds/terraform.tfstate"
   }
 }
+
 
 resource "aws_route53_zone" "zone" {
   name = "matabit.org"
@@ -60,7 +54,7 @@ resource "aws_route53_record" "elk" {
   name    = "elk"
   type    = "A"
   ttl     = "300"
-  records = ["34.220.179.85"]
+  records = ["${var.elk_ip}"]
 }
 
 resource "aws_route53_record" "db" {
@@ -76,5 +70,5 @@ resource "aws_route53_record" "dev" {
   name    = "dev"
   type    = "A"
   ttl     = "300"
-  records = ["${data.terraform_remote_state.lightsail.matabit_dev_ip}"]
+  records = ["${var.dev_ip}"]
 }
