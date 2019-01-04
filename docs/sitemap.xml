@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://digitalsoba.github.io/classroom-profiles-ops/basics/</loc>
+    <lastmod>2019-01-03T10:49:50-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://digitalsoba.github.io/classroom-profiles-ops/ops/</loc>
+    <lastmod>2019-01-03T10:59:17-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://digitalsoba.github.io/classroom-profiles-ops/ops/drone/</loc>
+    <lastmod>2019-01-04T10:08:02-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://digitalsoba.github.io/classroom-profiles-ops/ops/elastic-stack/</loc>
+    <lastmod>2019-01-03T11:00:49-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://digitalsoba.github.io/classroom-profiles-ops/</loc>
+    <lastmod>2019-01-03T10:54:26-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://digitalsoba.github.io/classroom-profiles-ops/basics/starting-dev-environment/</loc>
+    <lastmod>2019-01-03T10:52:01-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://digitalsoba.github.io/classroom-profiles-ops/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://digitalsoba.github.io/classroom-profiles-ops/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

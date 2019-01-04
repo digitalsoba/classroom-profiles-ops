@@ -1,0 +1,57 @@
+[
+{
+	"uri": "https://digitalsoba.github.io/classroom-profiles-ops/basics/",
+	"title": "Basics",
+	"tags": [],
+	"description": "",
+	"content": " How to bootstrap the project "
+},
+{
+	"uri": "https://digitalsoba.github.io/classroom-profiles-ops/ops/",
+	"title": "Operations",
+	"tags": [],
+	"description": "",
+	"content": " Docs for operations "
+},
+{
+	"uri": "https://digitalsoba.github.io/classroom-profiles-ops/ops/drone/",
+	"title": "Drone",
+	"tags": [],
+	"description": "",
+	"content": " How to use and deploy Drone CICD Drone is an open source CI/CD tools that uses docker container for pipelines. It\u0026rsquo;s fast and highly configurable\nDrone requirements: - Docker - Docker-compose - Github OAuth access\nCreate an OAuth App On Github, navigate to your Settings --\u0026gt; Developer Settings --\u0026gt; OAuth Apps. Create a new OAuth app. For both URLs we are using HTTPS because we will generate a Cert with Let’s Encrypt when drone is deployed.\nInputs - Application name: Anything you want - Homepage URL: https://drone.example.com - Application description - Optional - Authorization callback URL - https://drone.example.com/login\nAfter you created your app you should be welcomed with a page that contains Client ID and Client Secret, make sure you save this.\nCreating the docker-compose.yml file Drone runs purely in containers, in our example we\u0026rsquo;re going use a single machine. We can further expand drone to use additional agents to increase task capacity. We will need two files created: docker-compose.yml and a .env file.\ndocker-compose.yml version: '3' services: drone: container_name: drone image: 'drone/drone:1.0.0-rc.1' restart: always ports: - '80:80' - '443:443' volumes: - '/var/run/docker.sock:/var/run/docker.sock' - '/var/lib/drone:/data' environment: - DRONE_GITHUB_SERVER=https://github.com - DRONE_GITHUB_CLIENT_ID=$CLIENT_ID - DRONE_GITHUB_CLIENT_SECRET=$CLIENT_SECRET - DRONE_RUNNER_CAPACITY=2 - DRONE_SERVER_HOST=$SERVER_HOST - DRONE_SERVER_PROTO=https - DRONE_TLS_AUTOCERT=true - DRONE_USER_FILTER=$ORG, $USER - DRONE_USER_CREATE=username:$USER,machine:false,admin:true  .env # Grab these from the OAuth app $CLIENT_ID=pastefromgithub $CLIENT_SECRET=pastefromgithub # This will be host where drone is installed $SERVER_HOST=drone.example.com # This can be a github user or a machine user $USER=user $ORG=githuborganization  Transfering yaml file There are multiple ways to deploy drone, one method is using the ansible playbook. This playbook will also install docker and docker compose. Another option is to rsync or create the docker-compose.yml file and .env file. After, run docker-compose up -d.\nUsing the ansible playbook Make sure you have ansible installed on your master machine and python/python3. Create an .env file in the docker/drone directory with the required environment variables. Switch to the ansible/playbooks/drone directory. Create a hosts.ini file and specify your host and username; also use python3 as a python interpreter. An example below\n[drone] drone.example.com [drone:vars] ansible_python_interpreter=/usr/bin/python3 ansible_user=user  Run ansible-playbook --ask-vault-pass drone.yml to deploy.\n"
+},
+{
+	"uri": "https://digitalsoba.github.io/classroom-profiles-ops/ops/elastic-stack/",
+	"title": "Elastic Stack",
+	"tags": [],
+	"description": "",
+	"content": " Intro The Elastic stack or ELK (Old nickname) is an open source set of tools that allow us to gather logs and metrics to visualize them in real-time. The main components of the include: Elasticsearch, Logstash, and Kibana. Elastic Search allows us to search, analyze, and store data. Logstash aggregates data into Elasticsearch. Kibana let\u0026rsquo;s use visualize our data. The stack also includes beats which are lightweight data shippers that point to either Elasticsearch or Logstash. For our stack, we also added Nginx as a reverse proxy for Kibana. The basic flow of information looks like this (Source: Digitalocean): Prerequisites  Ansible SSH access to the ELK server  Install ELK stack master playbook Clone the ops repo if you haven\u0026rsquo;t already with git clone \u0026lt;insert project\u0026gt; and change directory into the project. Change directory into the playbook with cd ansible/playbooks/elk. We need to add our host files to run the playbook against. Create a host.ini file with your favorite text editor ex. vim hosts.ini. Add your hosts with the following variables like the sample below:\n[elk] example.com [elk:vars] ansible_python_interpreter=/usr/bin/python3 ansible_ssh_user=user  Now run the playbook with ansible-playbook elk.yml This playbook will run the roles: elk and elk-load which will install the Elastic stack and load the Filebeat dashboards into the server. After installing the master node verify the services are up by visiting the elk server on your web browser. If the stack is not up check the server to see if the ELK services are up and check the logs. If everything is running you can move on to configuring Kibana and installing beats on your server nodes.\nConfiguring Kibana In Kibana set the default index pattern to Filebeat-*. Visit the Kibana page, navigate to Management--\u0026gt;Kibana--\u0026gt;Index Patterns. Select Filebeat-* on the left hand side, the page will load the index patterns; select the star on the right hand side to set Filebeat-* as the default index.\nInstall beats into nodes Filebeat ships log data into the master elk server. This playbook is located in ansible/playbooks/elk-beats. Change directory into this folder. Create a host inventory file and add your configurations ex. vim hosts.ini. This playbook installs beats on debian and redhat hosts. It also allows both python2 and python3 as the python interpreters.\n[elk-beats] example1.com example2.com [python2] example3.com [elk-beats:vars] ansible_python_interpreter=/usr/bin/python3 ansible_ssh_user=user [python2:vars] ansible_ssh_user=user  When ready to deploy run ansible-playbook elk-beats. After the playbook completes, verify beats are being shipped by visiting Kibana\u0026rsquo;s discovery tab.\nAnsible playbook explanation ELK playbook and roles The playbook is found in the ops repo for the project in the ansible/playbook/elk directory. This contains ansible.cfg, elk.yml, and hosts.ini after the inventory is created.\n ansible.cfg - Contains the path for roles and hosts inventory elk.yml - This is the main playbook that use the elk and elk load roles hosts.ini - Inventory of hosts to run the playbook against  Roles There are two main roles and a few important directories:\n elk - Installs Java, adds Elastic repo, installs ELK services and Nginx proxy  vars - Contains variable for ELK host, edit this templates - Contains Logstash pipelines configs.  elk-load - Installs Filebeat and loads index patterns and sample dashboards  ELK-Beats playbook and roles Located in ansible/playbook/elk-beats, this playbook will install Filebeat into the node servers with the systems, apache, and Nginx modules enabled.\nRoles There\u0026rsquo;s only one role\n elk-beats - Installs Filebeat service for debian and redhat based distros. Starts and enables the service.  vars - Contains variable for ELK host, edit this   Things to consider  Add SSL cert on Nginx Proxy   Issues "
+},
+{
+	"uri": "https://digitalsoba.github.io/classroom-profiles-ops/",
+	"title": "Home",
+	"tags": [],
+	"description": "",
+	"content": " Classroom Profiles documentaion This site contains documentation for both the Github project and Infrastructure repo\n"
+},
+{
+	"uri": "https://digitalsoba.github.io/classroom-profiles-ops/basics/starting-dev-environment/",
+	"title": "Starting Dev Environment",
+	"tags": [],
+	"description": "",
+	"content": " Classroom-Profiles \nCOMP490/CIT480 Senior Design project. This application will navigate students to their respective classes based on their schedule and more!\nHow to get started with the project Prerequisites Make sure you have the following: - Git - A terminal - Docker - Docker-Compose - Composer - NPM or Yarn\nBootstrapping a freshly cloned project  Clone the repo into your projects folder with your terminal using git clone https://github.com/CSUN-Comp490/classroom-profiles.git and change directory into the project cd classroom-profiles Run composer install on the terminal Run yarn or npm install to grab Frontend packages Copy the .env.example as a .env file with cp .env.example .env If you\u0026rsquo;re using the database, ask your Ops person for the proper .env file Run php artisan key:generate Now run docker-compose up -d to start your local dev environment Visit http://localhost:8080 to view the project  Tip: When you\u0026rsquo;re done developing, run docker-compose down to stop your environment\n"
+},
+{
+	"uri": "https://digitalsoba.github.io/classroom-profiles-ops/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://digitalsoba.github.io/classroom-profiles-ops/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]

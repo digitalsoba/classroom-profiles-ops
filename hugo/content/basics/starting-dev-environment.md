@@ -1,6 +1,10 @@
+---
+title: "Starting Dev Environment"
+date: 2019-01-03T10:52:01-08:00
+draft: false
+---
 # Classroom-Profiles
 [![Build Status](https://cloud.drone.io/api/badges/CSUN-Comp490/classroom-profiles/status.svg?branch=dev)](https://cloud.drone.io/CSUN-Comp490/classroom-profiles)
-
 
 COMP490/CIT480 Senior Design project. This application will navigate students to their respective classes based on their schedule and more!
 
@@ -8,7 +12,7 @@ COMP490/CIT480 Senior Design project. This application will navigate students to
 
 ### Prerequisites 
 Make sure you have the following:
-- Git 
+- [Git](https://guides.github.com/activities/hello-world/)
 - A terminal
 - [Docker](https://www.docker.com/get-started)
 - [Docker-Compose](https://docs.docker.com/compose/install/)

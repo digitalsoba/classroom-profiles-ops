@@ -1,3 +1,8 @@
+---
+title: "Drone"
+date: 2019-01-04T10:08:02-08:00
+draft: false
+---
 # How to use and deploy Drone CICD
 Drone is an open source CI/CD tools that uses docker container for pipelines. It's fast and highly configurable
 
