@@ -12,17 +12,17 @@
     <title>Elastic Stack :: Classroom Profiles docs</title>
 
     
-    <link href="/classroom-profiles-ops/css/nucleus.css?1546625663" rel="stylesheet">
-    <link href="/classroom-profiles-ops/css/fontawesome-all.min.css?1546625663" rel="stylesheet">
-    <link href="/classroom-profiles-ops/css/hybrid.css?1546625663" rel="stylesheet">
-    <link href="/classroom-profiles-ops/css/featherlight.min.css?1546625663" rel="stylesheet">
-    <link href="/classroom-profiles-ops/css/perfect-scrollbar.min.css?1546625663" rel="stylesheet">
-    <link href="/classroom-profiles-ops/css/auto-complete.css?1546625663" rel="stylesheet">
-    <link href="/classroom-profiles-ops/css/theme.css?1546625663" rel="stylesheet">
-    <link href="/classroom-profiles-ops/css/hugo-theme.css?1546625663" rel="stylesheet">
+    <link href="/classroom-profiles-ops/css/nucleus.css?1546630943" rel="stylesheet">
+    <link href="/classroom-profiles-ops/css/fontawesome-all.min.css?1546630943" rel="stylesheet">
+    <link href="/classroom-profiles-ops/css/hybrid.css?1546630943" rel="stylesheet">
+    <link href="/classroom-profiles-ops/css/featherlight.min.css?1546630943" rel="stylesheet">
+    <link href="/classroom-profiles-ops/css/perfect-scrollbar.min.css?1546630943" rel="stylesheet">
+    <link href="/classroom-profiles-ops/css/auto-complete.css?1546630943" rel="stylesheet">
+    <link href="/classroom-profiles-ops/css/theme.css?1546630943" rel="stylesheet">
+    <link href="/classroom-profiles-ops/css/hugo-theme.css?1546630943" rel="stylesheet">
     
 
-    <script src="/classroom-profiles-ops/js/jquery-2.x.min.js?1546625663"></script>
+    <script src="/classroom-profiles-ops/js/jquery-2.x.min.js?1546630943"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -67,14 +67,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/classroom-profiles-ops/js/lunr.min.js?1546625663"></script>
-<script type="text/javascript" src="/classroom-profiles-ops/js/auto-complete.js?1546625663"></script>
+<script type="text/javascript" src="/classroom-profiles-ops/js/lunr.min.js?1546630943"></script>
+<script type="text/javascript" src="/classroom-profiles-ops/js/auto-complete.js?1546630943"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/digitalsoba.github.io\/classroom-profiles-ops\/";
     
 </script>
-<script type="text/javascript" src="/classroom-profiles-ops/js/search.js?1546625663"></script>
+<script type="text/javascript" src="/classroom-profiles-ops/js/search.js?1546630943"></script>
 
     
   </div>
@@ -280,13 +280,9 @@
 </ul></li>
 <li><a href="#ansible-playbook-explanation">Ansible playbook explanation</a>
 <ul>
-<li><a href="#elk-playbook-and-roles">ELK playbook and roles</a>
+<li><a href="#playbooks-and-roles">Playbooks and roles</a>
 <ul>
 <li><a href="#roles">Roles</a></li>
-</ul></li>
-<li><a href="#elk-beats-playbook-and-roles">ELK-Beats playbook and roles</a>
-<ul>
-<li><a href="#roles-1">Roles</a></li>
 </ul></li>
 <li><a href="#things-to-consider">Things to consider</a></li>
 <li><a href="#issues">Issues</a></li>
@@ -315,29 +311,66 @@
 
 <h2 id="intro">Intro</h2>
 
-<p>The Elastic stack or ELK (Old nickname) is an open source set of tools that allow us to gather logs and metrics to visualize them in real-time. The main components of the include: Elasticsearch, Logstash, and Kibana. Elastic Search allows us to search, analyze, and store data. Logstash aggregates data into Elasticsearch. Kibana let&rsquo;s use visualize our data. The stack also includes beats which are lightweight data shippers that point to either Elasticsearch or Logstash. For our stack, we also added Nginx as a reverse proxy for Kibana. The basic flow of information looks like this (Source: <a href="https://www.digitalocean.com/community/tutorials/how-to-install-elasticsearch-logstash-and-kibana-elk-stack-on-ubuntu-14-04">Digitalocean</a>):
+<p>The Elastic stack or ELK (Old nickname) is an open source set of tools that allow us to gather logs and metrics and visualize them. The main components of the include: Elasticsearch, Logstash, and Kibana. Elastic Search is used to search, analyze, and store data. Logstash aggregates data into Elasticsearch. Kibana let&rsquo;s use visualize our data. The stack also includes beats which are lightweight data shippers that point to either Elasticsearch or Logstash. For our stack, we also added Nginx as a reverse proxy for Kibana. The basic flow of information looks like this (Source: <a href="https://www.digitalocean.com/community/tutorials/how-to-install-elasticsearch-logstash-and-kibana-elk-stack-on-ubuntu-14-04">Digitalocean</a>):
 <img src="https://assets.digitalocean.com/articles/elk/elk-infrastructure.png" alt="elk-stack-diagram" /></p>
 
 <h2 id="prerequisites">Prerequisites</h2>
 
 <ul>
 <li>Ansible</li>
-<li>SSH access to the ELK server</li>
+<li>SSH access to the servers you&rsquo;re running tha playbook against
+
+<ul>
+<li>Python2/3</li>
+</ul></li>
 </ul>
 
 <h3 id="install-elk-stack-master-playbook">Install ELK stack master playbook</h3>
 
-<p>Clone the ops repo if you haven&rsquo;t already with <code>git clone &lt;insert project&gt;</code> and change directory into the project. Change directory into the playbook with <code>cd ansible/playbooks/elk</code>. We need to add our host files to run the playbook against. Create a <code>host.ini</code> file with your favorite text editor ex. <code>vim hosts.ini</code>. Add your hosts with the following variables like the sample below:</p>
+<p>Clone the ops repo if you haven&rsquo;t already and change directory into the project.</p>
 
-<pre><code class="language-ini">[elk]
+<p><code>git clone &lt;insert project&gt;</code></p>
+
+<p><code>cd ansible/playbooks/elk</code></p>
+
+<p>We need to add hosts to run the playbook against. Create a <code>host.ini</code> file with your favorite text editor ex.</p>
+
+<p><code>vim hosts.ini</code>.</p>
+
+<p>In the host inventory you will need: elk, beats, beats-python2:</p>
+
+<pre><code class="language-ini"># Master ELK server
+[elk]
 example.com
+
+# Node servers
+[beats]
+example.com
+2.example.com
+
+# Nodes using python2
+[beats-python2]
+ssh.matabit.org
+
+# Variables for hosts
+[beats:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_user=user
+
+[beats-python2:vars]
+ansible_ssh_user=user
 
 [elk:vars]
 ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_user=user
+
 </code></pre>
 
-<p>Now run the playbook with <code>ansible-playbook elk.yml</code> This playbook will run the roles: <code>elk and elk-load</code> which will install the Elastic stack and load the Filebeat dashboards into the server. After installing the master node verify the services are up by visiting the elk server on your web browser. If the stack is not up check the server to see if the ELK services are up and check the logs. If everything is running you can move on to configuring Kibana and installing beats on your server nodes.</p>
+<p>The master playbook is <code>elk.yml</code>. This playbook will install the Elastic stack and load the Filebeat dashboards into the server. To run the playbook:</p>
+
+<p><code>ansible-playbook elk.yml</code></p>
+
+<p>After installing the master node verify the services are up by visiting the elk server on your web browser. If the stack is not up check the server to see if the ELK services are up and visit the logs. If everything is running you can move on to configuring Kibana and installing beats on your server nodes.</p>
 
 <h3 id="configuring-kibana">Configuring Kibana</h3>
 
@@ -345,40 +378,30 @@ ansible_ssh_user=user
 
 <h3 id="install-beats-into-nodes">Install beats into nodes</h3>
 
-<p>Filebeat ships log data into the master elk server. This playbook is located in <code>ansible/playbooks/elk-beats</code>. Change directory into this folder. Create a host inventory file and add your configurations ex. <code>vim hosts.ini</code>. This playbook installs beats on debian and redhat hosts. It also allows both python2 and python3 as the python interpreters.</p>
+<p>Filebeat ships log data into the master elk server. This playbook is located in <code>ansible/playbooks/elk</code> under the filename <code>elk-beats.yml</code>. If you haven&rsquo;t already add hosts to into your inventory under beats and beats-python2.</p>
 
-<pre><code class="language-ini">[elk-beats]
-example1.com
-example2.com
+<p>When ready to deploy run</p>
 
-[python2]
-example3.com
+<p><code>ansible-playbook elk-beats</code></p>
 
-[elk-beats:vars]
-ansible_python_interpreter=/usr/bin/python3
-ansible_ssh_user=user
-
-[python2:vars]
-ansible_ssh_user=user
-</code></pre>
-
-<p>When ready to deploy run <code>ansible-playbook elk-beats</code>. After the playbook completes, verify beats are being shipped by visiting Kibana&rsquo;s discovery tab.</p>
+<p>After the playbook completes, verify beats are being shipped by visiting Kibana&rsquo;s discovery tab.</p>
 
 <h2 id="ansible-playbook-explanation">Ansible playbook explanation</h2>
 
-<h3 id="elk-playbook-and-roles">ELK playbook and roles</h3>
+<h3 id="playbooks-and-roles">Playbooks and roles</h3>
 
-<p>The playbook is found in the ops repo for the project in the <strong>ansible/playbook/elk</strong> directory. This contains <strong>ansible.cfg</strong>, <strong>elk.yml</strong>, and <strong>hosts.ini</strong> after the inventory is created.</p>
+<p>The playbooks are found in the ops repo for the project in the <strong>ansible/playbook/elk</strong> directory. This contains <strong>ansible.cfg</strong>, <strong>elk.yml</strong>, <strong>elk-beats.yml</strong> and <strong>hosts.ini</strong>.</p>
 
 <ul>
 <li><strong>ansible.cfg</strong> - Contains the path for roles and hosts inventory</li>
 <li><strong>elk.yml</strong> - This is the main playbook that use the elk and elk load roles</li>
+<li><strong>elk-beats.yml</strong> - Installs Filebeat and enables modules</li>
 <li><strong>hosts.ini</strong> - Inventory of hosts to run the playbook against</li>
 </ul>
 
 <h4 id="roles">Roles</h4>
 
-<p>There are two main roles and a few important directories:</p>
+<p><strong>ELK playbook</strong>: Installs ELK stack with Nginx Proxy</p>
 
 <ul>
 <li><strong>elk</strong> - Installs Java, adds Elastic repo, installs ELK services and Nginx proxy
@@ -390,13 +413,7 @@ ansible_ssh_user=user
 <li><strong>elk-load</strong> - Installs Filebeat and loads index patterns and sample dashboards</li>
 </ul>
 
-<h3 id="elk-beats-playbook-and-roles">ELK-Beats playbook and roles</h3>
-
-<p>Located in <strong>ansible/playbook/elk-beats</strong>, this playbook will install Filebeat into the node servers with the <strong>systems, apache, and Nginx</strong> modules enabled.</p>
-
-<h4 id="roles-1">Roles</h4>
-
-<p>There&rsquo;s only one role</p>
+<p><strong>ELK-beats playbook</strong>: this playbook will install Filebeat into the node servers with the <strong>systems, apache, and Nginx</strong> modules enabled.</p>
 
 <ul>
 <li><strong>elk-beats</strong> - Installs Filebeat service for debian and redhat based distros. Starts and enables the service.
@@ -557,20 +574,20 @@ ansible_ssh_user=user
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/classroom-profiles-ops/js/clipboard.min.js?1546625663"></script>
-    <script src="/classroom-profiles-ops/js/perfect-scrollbar.min.js?1546625663"></script>
-    <script src="/classroom-profiles-ops/js/perfect-scrollbar.jquery.min.js?1546625663"></script>
-    <script src="/classroom-profiles-ops/js/jquery.sticky.js?1546625663"></script>
-    <script src="/classroom-profiles-ops/js/featherlight.min.js?1546625663"></script>
-    <script src="/classroom-profiles-ops/js/html5shiv-printshiv.min.js?1546625663"></script>
-    <script src="/classroom-profiles-ops/js/highlight.pack.js?1546625663"></script>
+    <script src="/classroom-profiles-ops/js/clipboard.min.js?1546630943"></script>
+    <script src="/classroom-profiles-ops/js/perfect-scrollbar.min.js?1546630943"></script>
+    <script src="/classroom-profiles-ops/js/perfect-scrollbar.jquery.min.js?1546630943"></script>
+    <script src="/classroom-profiles-ops/js/jquery.sticky.js?1546630943"></script>
+    <script src="/classroom-profiles-ops/js/featherlight.min.js?1546630943"></script>
+    <script src="/classroom-profiles-ops/js/html5shiv-printshiv.min.js?1546630943"></script>
+    <script src="/classroom-profiles-ops/js/highlight.pack.js?1546630943"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/classroom-profiles-ops/js/modernizr.custom.71422.js?1546625663"></script>
-    <script src="/classroom-profiles-ops/js/learn.js?1546625663"></script>
-    <script src="/classroom-profiles-ops/js/hugo-learn.js?1546625663"></script>
+    <script src="/classroom-profiles-ops/js/modernizr.custom.71422.js?1546630943"></script>
+    <script src="/classroom-profiles-ops/js/learn.js?1546630943"></script>
+    <script src="/classroom-profiles-ops/js/hugo-learn.js?1546630943"></script>
 
-    <link href="/classroom-profiles-ops/mermaid/mermaid.css?1546625663" type="text/css" rel="stylesheet" />
-    <script src="/classroom-profiles-ops/mermaid/mermaid.js?1546625663"></script>
+    <link href="/classroom-profiles-ops/mermaid/mermaid.css?1546630943" type="text/css" rel="stylesheet" />
+    <script src="/classroom-profiles-ops/mermaid/mermaid.js?1546630943"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

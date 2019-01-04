@@ -28,7 +28,7 @@ Create an OAuth App On Github, navigate to your Settings --&amp;gt; Developer Se
       <pubDate>Thu, 03 Jan 2019 11:00:49 -0800</pubDate>
       
       <guid>https://digitalsoba.github.io/classroom-profiles-ops/ops/elastic-stack/</guid>
-      <description>Intro The Elastic stack or ELK (Old nickname) is an open source set of tools that allow us to gather logs and metrics to visualize them in real-time. The main components of the include: Elasticsearch, Logstash, and Kibana. Elastic Search allows us to search, analyze, and store data. Logstash aggregates data into Elasticsearch. Kibana let&amp;rsquo;s use visualize our data. The stack also includes beats which are lightweight data shippers that point to either Elasticsearch or Logstash.</description>
+      <description>Intro The Elastic stack or ELK (Old nickname) is an open source set of tools that allow us to gather logs and metrics and visualize them. The main components of the include: Elasticsearch, Logstash, and Kibana. Elastic Search is used to search, analyze, and store data. Logstash aggregates data into Elasticsearch. Kibana let&amp;rsquo;s use visualize our data. The stack also includes beats which are lightweight data shippers that point to either Elasticsearch or Logstash.</description>
     </item>
     
   </channel>
