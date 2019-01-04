@@ -1,6 +1,8 @@
 ---
 - name: Deploy ELK beats
-  hosts: all
+  hosts: 
+    - beats
+    - beats-python2
   become: true
   roles:
     - elk-beats
