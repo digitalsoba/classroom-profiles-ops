@@ -29,13 +29,12 @@ data "terraform_remote_state" "vpc" {
 data "terraform_remote_state" "rds" {
   backend = "s3"
 
-  config{
+  config {
     bucket = "matabit-terraform-backend"
     region = "us-west-2"
     key    = "rds/terraform.tfstate"
   }
 }
-
 
 resource "aws_route53_zone" "zone" {
   name = "matabit.org"
