@@ -9,3 +9,7 @@ variable "elk_ip" {
 variable "dev_ip" {
   default = "35.164.28.7"
 }
+
+variable "checkpoint_ip" {
+  default = "54.185.180.192"
+}

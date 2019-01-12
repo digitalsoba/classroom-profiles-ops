@@ -1,0 +1,6 @@
+---
+- name: Init users 
+  hosts: init
+  become: true
+  roles:
+    - add-users

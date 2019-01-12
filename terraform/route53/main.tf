@@ -71,3 +71,11 @@ resource "aws_route53_record" "dev" {
   ttl     = "300"
   records = ["${var.dev_ip}"]
 }
+
+resource "aws_route53_record" "checkpoint" {
+  zone_id = "${aws_route53_zone.zone.zone_id}"
+  name    = "checkpoint"
+  type    = "A"
+  ttl     = "300"
+  records = ["${var.checkpoint_ip}"]
+}
