@@ -72,10 +72,11 @@ resource "aws_route53_record" "dev" {
   records = ["${var.dev_ip}"]
 }
 
-resource "aws_route53_record" "checkpoint" {
+resource "aws_route53_record" "prod" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
-  name    = "checkpoint"
+  name    = "matabit.org"
   type    = "A"
   ttl     = "300"
-  records = ["${var.checkpoint_ip}"]
+  records = ["${var.dev_ip}"]
 }
+
