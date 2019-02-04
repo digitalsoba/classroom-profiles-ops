@@ -1,12 +1,13 @@
 FROM php:7.3-rc-apache
 
 # Install php extensions
-RUN docker-php-ext-install pdo_mysql \
+RUN apt-get update \
+  && apt-get install libldap2-dev -y  \
+  && rm -rf /var/lib/apt/lists/* \
+  && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+  && docker-php-ext-install ldap pdo_mysql \
 # Enable apache modules
-  && a2enmod headers rewrite \
-# Add user local dev env groups to www-data group
-  && usermod -u 1000 www-data && usermod -G staff www-data 
-
+  && a2enmod headers rewrite 
 # Add apache.conf file 
 COPY ./apache.conf /etc/apache2/sites-enabled/000-default.conf  
 
