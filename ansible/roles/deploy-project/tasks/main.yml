@@ -4,9 +4,9 @@
     repo: https://github.com/CSUN-Comp490/classroom-profiles.git
     dest: /var/www/dev/laravel
 
-- name: Composer update
+- name: Composer install
   composer:
-    command: update
+    command: install
     working_dir: /var/www/dev/laravel
 
 - name: Copy .env file

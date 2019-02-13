@@ -197,3 +197,4 @@ resource "aws_spot_instance_request" "cp_dev_server" {
     Name = "cp_dev_server"
   }
 }
+

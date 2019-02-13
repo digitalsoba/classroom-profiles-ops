@@ -16,3 +16,4 @@
     - php7.2-xml
     - php7.2-cli
     - php7.2-zip
+    - php7.2-ldap

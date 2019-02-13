@@ -17,3 +17,13 @@ data "terraform_remote_state" "rds" {
     key    = "rds/terraform.tfstate"
   }
 }
+
+data "terraform_remote_state" "ecr_ecs" {
+  backend = "s3"
+
+  config {
+    bucket = "matabit-terraform-backend"
+    region = "us-west-2"
+    key    = "ecr_ecs/terraform.tfstate"
+  }
+}

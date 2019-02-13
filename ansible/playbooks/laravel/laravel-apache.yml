@@ -1,0 +1,8 @@
+---
+- name: Install Laravel dependencies
+  hosts: all
+  become: true
+  roles:
+    - apache
+    - php-apache
+    - deploy-project
