@@ -1,13 +1,30 @@
+# Get the latest ECS AMI
+data "aws_ami" "latest_ecs" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["*amazon-ecs-optimized"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["591542846629"] # AWS
+}
+
 resource "aws_launch_configuration" "ecs-launch-configuration" {
   name                 = "ecs-launch-configuration"
-  image_id             = "ami-0d3bd9852d477ade8"
-  instance_type        = "t2.medium"
-  spot_price           = "0.0139"
+  image_id             = "${data.aws_ami.latest_ecs.id}"
+  instance_type        = "t2.micro"
+  spot_price           = "0.0035"
   iam_instance_profile = "${aws_iam_instance_profile.ecs-instance-profile.id}"
 
   root_block_device {
     volume_type           = "standard"
-    volume_size           = 100
+    volume_size           = 8
     delete_on_termination = true
   }
 

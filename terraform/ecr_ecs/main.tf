@@ -26,7 +26,7 @@ data "aws_iam_role" "ecsTaskExecutionRole" {
 
 resource "aws_ecs_task_definition" "matabit-prod" {
   family                   = "matabit-prod"
-  container_definitions    = "${file("task-definitions/matabit-dev.json")}"
+  container_definitions    = "${file("task-definitions/matabit-prod.json")}"
   network_mode             = "bridge"
   requires_compatibilities = ["EC2"]
   task_role_arn            = "${data.aws_iam_role.ecsTaskExecutionRole.arn}"
@@ -45,7 +45,7 @@ resource "aws_ecs_service" "prod-service" {
   load_balancer {
     target_group_arn = "${aws_alb_target_group.alb_target_group_prod.id}"
     container_port   = 80
-    container_name   = "matabit-dev-container"
+    container_name   = "matabit-prod-container"
   }
 
   depends_on = [
