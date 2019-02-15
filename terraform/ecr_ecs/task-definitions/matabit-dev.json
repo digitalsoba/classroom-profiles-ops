@@ -1,14 +1,14 @@
 [
     {
       "name": "matabit-dev-container",
-      "image": "531697185897.dkr.ecr.us-west-2.amazonaws.com/matabit_ecr:latest",
+      "image": "531697185897.dkr.ecr.us-west-2.amazonaws.com/matabit_ecr:dev",
       "cpu": 10,
       "memory": 512,
       "essential": true,
       "portMappings": [
         {
           "containerPort": 80,
-          "hostPort": 80
+          "hostPort": 0
         }
       ]
     }

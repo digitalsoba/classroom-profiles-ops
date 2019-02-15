@@ -144,7 +144,7 @@ module "web_server_sg" {
 
 resource "aws_spot_instance_request" "elk_spot_instance" {
   ami                         = "${var.ami_id}"
-  spot_price                  = "0.046"
+  spot_price                  = "0.0140"
   instance_type               = "t2.medium"
   key_name                    = "${var.key_name}"
   monitoring                  = true
@@ -154,12 +154,6 @@ resource "aws_spot_instance_request" "elk_spot_instance" {
   user_data                   = "${file("../cloud-init.conf")}"
   security_groups             = ["${module.elk_sg.this_security_group_id}"]
   subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
-
-  ebs_block_device = [{
-    device_name = "/dev/sdh"
-    volume_size = "20"
-    volume_type = "gp2"
-  }]
 
   provisioner "local-exec" {
     command = "aws ec2 create-tags --resources ${aws_spot_instance_request.elk_spot_instance.spot_instance_id} --tags Key=Name,Value=elk-server-${count.index}"
@@ -197,4 +191,3 @@ resource "aws_spot_instance_request" "cp_dev_server" {
     Name = "cp_dev_server"
   }
 }
-

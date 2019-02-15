@@ -1,7 +1,7 @@
 [
     {
       "name": "matabit-prod-container",
-      "image": "531697185897.dkr.ecr.us-west-2.amazonaws.com/matabit_ecr:latest",
+      "image": "531697185897.dkr.ecr.us-west-2.amazonaws.com/matabit_ecr:prod",
       "cpu": 10,
       "memory": 512,
       "essential": true,

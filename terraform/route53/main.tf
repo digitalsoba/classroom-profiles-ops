@@ -16,7 +16,6 @@ terraform {
   }
 }
 
-
 resource "aws_route53_zone" "zone" {
   name = "matabit.org"
 }
@@ -34,7 +33,7 @@ resource "aws_route53_record" "elk" {
   name    = "elk"
   type    = "A"
   ttl     = "300"
-  records = ["${var.elk_ip}"]
+  records = ["${data.terraform_remote_state.spot_instance.elk_spot_ip}"]
 }
 
 resource "aws_route53_record" "db" {
@@ -47,17 +46,24 @@ resource "aws_route53_record" "db" {
 
 resource "aws_route53_record" "dev" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
-  name    = "dev"
+  name    = "dev.matabit.org"
   type    = "A"
-  ttl     = "300"
-  records = ["${var.dev_ip}"]
+
+  alias {
+    name                   = "${data.terraform_remote_state.ecr_ecs.alb_cname}"
+    zone_id                = "${data.terraform_remote_state.ecr_ecs.alb_zone_id}"
+    evaluate_target_health = true
+  }
 }
 
 resource "aws_route53_record" "prod" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
   name    = "matabit.org"
   type    = "A"
-  ttl     = "300"
-  records = ["${var.dev_ip}"]
-}
 
+  alias {
+    name                   = "${data.terraform_remote_state.ecr_ecs.alb_cname}"
+    zone_id                = "${data.terraform_remote_state.ecr_ecs.alb_zone_id}"
+    evaluate_target_health = true
+  }
+}

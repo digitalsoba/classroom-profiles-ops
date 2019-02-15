@@ -24,6 +24,7 @@ data "aws_iam_role" "ecsTaskExecutionRole" {
   name = "ecsTaskExecutionRole"
 }
 
+# Prod task and service
 resource "aws_ecs_task_definition" "matabit-prod" {
   family                   = "matabit-prod"
   container_definitions    = "${file("task-definitions/matabit-prod.json")}"
@@ -40,12 +41,43 @@ resource "aws_ecs_service" "prod-service" {
   iam_role        = "${aws_iam_role.ecs-service-role.name}"
   cluster         = "${aws_ecs_cluster.matabit.id}"
   task_definition = "${aws_ecs_task_definition.matabit-prod.arn}"
-  desired_count   = 1
+  desired_count   = 2
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.alb_target_group_prod.id}"
     container_port   = 80
     container_name   = "matabit-prod-container"
+  }
+
+  depends_on = [
+    "aws_alb.alb",
+    "aws_alb_listener.frontend_https"
+  ]
+}
+
+# Dev task and service
+resource "aws_ecs_task_definition" "matabit-dev" {
+  family                   = "matabit-dev"
+  container_definitions    = "${file("task-definitions/matabit-dev.json")}"
+  network_mode             = "bridge"
+  requires_compatibilities = ["EC2"]
+  task_role_arn            = "${data.aws_iam_role.ecsTaskExecutionRole.arn}"
+  execution_role_arn       = "${data.aws_iam_role.ecsTaskExecutionRole.arn}"
+  cpu                      = 256
+  memory                   = 512
+}
+
+resource "aws_ecs_service" "dev-service" {
+  name            = "dev-service"
+  iam_role        = "${aws_iam_role.ecs-service-role.name}"
+  cluster         = "${aws_ecs_cluster.matabit.id}"
+  task_definition = "${aws_ecs_task_definition.matabit-dev.arn}"
+  desired_count   = 2
+
+  load_balancer {
+    target_group_arn = "${aws_alb_target_group.alb_target_group_dev.id}"
+    container_port   = 80
+    container_name   = "matabit-dev-container"
   }
 
   depends_on = [

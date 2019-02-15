@@ -27,3 +27,13 @@ data "terraform_remote_state" "ecr_ecs" {
     key    = "ecr_ecs/terraform.tfstate"
   }
 }
+
+data "terraform_remote_state" "spot_instance" {
+  backend = "s3"
+
+  config {
+    bucket = "matabit-terraform-backend"
+    region = "us-west-2"
+    key    = "spot-instance/terraform.tfstate"
+  }
+}
