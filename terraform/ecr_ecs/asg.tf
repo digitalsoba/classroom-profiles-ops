@@ -31,6 +31,22 @@ resource "aws_security_group" "instance_sg" {
     ]
   }
 
+  ingress {
+    protocol    = "tcp"
+    from_port   = "636"
+    to_port     = "636"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allowed LDAP to instances"
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = "22"
+    to_port     = "22"
+    cidr_blocks = ["${data.terraform_remote_state.vpc.vpc_cidr}"]
+    description = "Allow ssh into clusters"
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -38,25 +54,18 @@ resource "aws_security_group" "instance_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
 resource "aws_launch_configuration" "ecs-launch-configuration" {
   name                 = "ecs-launch-configuration"
   image_id             = "${data.aws_ami.latest_ecs.id}"
   instance_type        = "t2.small"
   spot_price           = "0.0070"
   iam_instance_profile = "${aws_iam_instance_profile.ecs-instance-profile.id}"
-
-  root_block_device {
-    volume_type           = "standard"
-    volume_size           = 8
-    delete_on_termination = true
-  }
+  security_groups      = ["${aws_security_group.instance_sg.id}"]
 
   lifecycle {
     create_before_destroy = true
   }
-
-  security_groups             = ["${aws_security_group.instance_sg.id}"]
-  associate_public_ip_address = "true"
 
   user_data = "${file("cloud-init.conf")}"
 }

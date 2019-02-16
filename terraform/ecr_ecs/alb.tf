@@ -27,6 +27,16 @@ module "alb_sg" {
 
   ingress_with_cidr_blocks = [
     {
+      from_port   = 636
+      to_port     = 636
+      protocol    = "tcp"
+      description = "LDAP"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
+
+  ingress_with_cidr_blocks = [
+    {
       from_port   = 443
       to_port     = 443
       protocol    = "tcp"
@@ -60,7 +70,7 @@ resource "aws_alb" "alb" {
   tags {
     name = "ecs-alb"
   }
-  
+
   timeouts {
     create = "10m"
     delete = "10m"
@@ -148,14 +158,15 @@ resource "aws_alb_target_group" "alb_target_group_dev" {
 
 resource "aws_lb_listener_rule" "dev_listener" {
   listener_arn = "${aws_alb_listener.frontend_https.arn}"
-  priority = 10
+  priority     = 10
 
   action = {
-    type = "forward"
+    type             = "forward"
     target_group_arn = "${aws_alb_target_group.alb_target_group_dev.id}"
   }
+
   condition = {
-    field = "host-header"
+    field  = "host-header"
     values = ["*dev.matabit.org"]
   }
 }

@@ -28,13 +28,13 @@ resource "aws_route53_record" "ssh" {
   records = ["${data.terraform_remote_state.vpc.nat_eip}"]
 }
 
-resource "aws_route53_record" "elk" {
-  zone_id = "${aws_route53_zone.zone.zone_id}"
-  name    = "elk"
-  type    = "A"
-  ttl     = "300"
-  records = ["${data.terraform_remote_state.spot_instance.elk_spot_ip}"]
-}
+# resource "aws_route53_record" "elk" {
+#   zone_id = "${aws_route53_zone.zone.zone_id}"
+#   name    = "elk"
+#   type    = "A"
+#   ttl     = "300"
+#   records = ["${data.terraform_remote_state.spot_instance.elk_spot_ip}"]
+# }
 
 resource "aws_route53_record" "db" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
