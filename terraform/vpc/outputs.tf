@@ -2,6 +2,10 @@ output "nat_eip" {
   value = "${aws_eip.nat.public_ip}"
 }
 
+output "vpc_cidr" {
+  value = "${aws_vpc.matabit_vpc.cidr_block}"
+}
+
 output "vpc_id" {
   value = "${aws_vpc.matabit_vpc.id}"
 }

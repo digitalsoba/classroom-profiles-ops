@@ -104,6 +104,13 @@ resource "aws_security_group" "nat" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+    ingress {
+    from_port   = 636
+    to_port     = 636
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 80
     to_port     = 80
