@@ -2,6 +2,6 @@ variable "rds_address" {
   default = "matabit-dev-db.cyxko5chikoa.us-west-2.rds.amazonaws.com"
 }
 
-variable "dev_ip" {
-  default = "35.164.28.7"
+variable "gcp_compute_ip" {
+  default = "35.236.71.3"
 }

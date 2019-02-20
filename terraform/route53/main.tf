@@ -46,24 +46,39 @@ resource "aws_route53_record" "db" {
 
 resource "aws_route53_record" "dev" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
-  name    = "dev.matabit.org"
+  name    = "dev"
   type    = "A"
-
-  alias {
-    name                   = "${data.terraform_remote_state.ecr_ecs.alb_cname}"
-    zone_id                = "${data.terraform_remote_state.ecr_ecs.alb_zone_id}"
-    evaluate_target_health = true
-  }
+  ttl     = "300"
+  records = ["${var.gcp_compute_ip}"]
 }
 
 resource "aws_route53_record" "prod" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
   name    = "matabit.org"
   type    = "A"
-
-  alias {
-    name                   = "${data.terraform_remote_state.ecr_ecs.alb_cname}"
-    zone_id                = "${data.terraform_remote_state.ecr_ecs.alb_zone_id}"
-    evaluate_target_health = true
-  }
+  ttl     = "300"
+  records = ["${var.gcp_compute_ip}"]
 }
+# resource "aws_route53_record" "dev" {
+#   zone_id = "${aws_route53_zone.zone.zone_id}"
+#   name    = "dev.matabit.org"
+#   type    = "A"
+
+#   alias {
+#     name                   = "${data.terraform_remote_state.ecr_ecs.alb_cname}"
+#     zone_id                = "${data.terraform_remote_state.ecr_ecs.alb_zone_id}"
+#     evaluate_target_health = true
+#   }
+# }
+
+# resource "aws_route53_record" "prod" {
+#   zone_id = "${aws_route53_zone.zone.zone_id}"
+#   name    = "matabit.org"
+#   type    = "A"
+
+#   alias {
+#     name                   = "${data.terraform_remote_state.ecr_ecs.alb_cname}"
+#     zone_id                = "${data.terraform_remote_state.ecr_ecs.alb_zone_id}"
+#     evaluate_target_health = true
+#   }
+# }

@@ -1,6 +1,5 @@
 server {
 listen 80;
-listen [::]:80 ipv6only=on;
  
 # Log files for Debugging
 access_log /var/log/nginx/laravel-access.log;
@@ -10,7 +9,7 @@ error_log /var/log/nginx/laravel-error.log;
 root /var/www/{{ env }}/public;
 index index.php index.html index.htm; 
 
-server_name matabit.org;
+server_name dev.matabit.org;
  
 location / {
 try_files $uri $uri/ /index.php?$query_string;
