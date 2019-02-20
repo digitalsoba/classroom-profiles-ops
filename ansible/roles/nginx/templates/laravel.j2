@@ -7,10 +7,10 @@ access_log /var/log/nginx/laravel-access.log;
 error_log /var/log/nginx/laravel-error.log;
  
 # Webroot Directory for Laravel project
-root /var/www/dev/public;
+root /var/www/{{ env }}/public;
 index index.php index.html index.htm; 
 
-server_name dev.matabit.org;
+server_name matabit.org;
  
 location / {
 try_files $uri $uri/ /index.php?$query_string;

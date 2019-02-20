@@ -2,39 +2,37 @@
 - name: Clone project
   git:
     repo: https://github.com/CSUN-Comp490/classroom-profiles.git
-    dest: /var/www/dev/laravel
+    dest: /var/www/{{ env }}/laravel
 
 - name: Composer install
   composer:
     command: install
-    working_dir: /var/www/dev/laravel
+    working_dir: /var/www/{{ env }}/laravel
 
 - name: Copy .env file
   command: cp .env.example .env 
   args:
-    chdir: /var/www/dev/laravel
+    chdir: /var/www/{{ env }}/laravel
 
 - name: Generate app key
   command: php artisan key:generate
   args:
-    chdir: /var/www/dev/laravel
+    chdir: /var/www/{{ env }}/laravel
 
 - name: Change laravel permission
   file:
-    path: /var/www/dev/laravel
+    path: /var/www/{{ env }}/laravel
     owner: www-data
     group: www-data
     recurse: yes
 
-- name: Create dev symlink
+- name: Create symlink
   file:
-    src: /var/www/dev/laravel/public
-    dest: /var/www/dev/public
+    src: /var/www/{{ env }}/laravel/public
+    dest: /var/www/{{ env }}/public
     state: link
 
 - name: Restart nginx
   service:
     name: nginx
     state: restarted
-
-    

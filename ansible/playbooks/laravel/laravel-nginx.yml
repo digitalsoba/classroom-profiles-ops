@@ -1,6 +1,8 @@
 ---
 - name: Install Laravel dependencies
-  hosts: demo
+  hosts: dev
+  vars:
+    env: prod
   become: true
   roles:
     - nginx
