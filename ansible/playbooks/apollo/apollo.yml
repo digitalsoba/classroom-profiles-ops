@@ -1,0 +1,11 @@
+---
+- name: Install apollo
+  hosts: apollo
+  become: true
+  vars:
+    domain: apollo.matabit.org
+    email: dev@anthonyinlavong.com
+  roles:
+    - docker
+    - apollo
+    - letsencrypt

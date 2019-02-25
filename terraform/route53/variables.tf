@@ -3,5 +3,5 @@ variable "rds_address" {
 }
 
 variable "gcp_compute_ip" {
-  default = "35.236.71.3"
+  default = "34.219.168.152"
 }

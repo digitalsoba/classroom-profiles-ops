@@ -1,0 +1,27 @@
+---
+  - name: Update cache + install software-properties-common
+    apt:
+      name: software-properties-common
+      update_cache: yes
+
+  - name: Add apt repository universe
+    shell:
+      cmd: add-apt-repository universe
+
+  - name: Add apt repository ppa:certbot/certbot
+    apt_repository:
+      repo: 'ppa:certbot/certbot'
+      state: present
+
+  - name: Update cache + install certbot+certbot nginx
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+        - certbot
+        - python-certbot-nginx
+
+  - name: Generate letsencrypt certbot
+    shell:
+      cmd: certbot --nginx -d {{ domain }} --email {{ email }} --agree-tos --redirect --no-eff-email

@@ -1,0 +1,26 @@
+---
+  - name: Create apollo directory
+    file:
+      path: /etc/apollo
+      state: directory
+
+  - name: Clone dockprom
+    git:
+      repo: 'https://github.com/stefanprodan/dockprom.git'
+      dest: /etc/apollo
+      update: no
+
+  - name: Run docker-compose.yml in /etc/apollo directory
+    shell:
+      chdir: /etc/apollo 
+      cmd: ADMIN_USER=admin ADMIN_PASSWORD=admin docker-compose up -d
+
+  - name: Install nginx
+    apt:
+      name: nginx
+      state: present
+
+  - name: Copy nginx config
+    template:
+      src: nginx.j2
+      dest: /etc/nginx/sites-available/default

@@ -44,6 +44,14 @@ resource "aws_route53_record" "db" {
   records = ["${var.rds_address}"]
 }
 
+resource "aws_route53_record" "apollo" {
+  zone_id = "${aws_route53_zone.zone.zone_id}"
+  name = "apollo"
+  type = "A"
+  ttl = "300"
+  records = ["${data.terraform_remote_state.spot_instance.apollo_spot_ip}"]
+}
+
 resource "aws_route53_record" "dev" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
   name    = "dev"
@@ -59,6 +67,7 @@ resource "aws_route53_record" "prod" {
   ttl     = "300"
   records = ["${var.gcp_compute_ip}"]
 }
+
 # resource "aws_route53_record" "dev" {
 #   zone_id = "${aws_route53_zone.zone.zone_id}"
 #   name    = "dev.matabit.org"
