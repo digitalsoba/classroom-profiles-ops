@@ -1,0 +1,8 @@
+---
+- name: Install cluster dependencies
+  hosts: all
+  become: true
+  roles:
+    - add-users
+    - docker
+    - kubernetes
