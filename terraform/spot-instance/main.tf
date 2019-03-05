@@ -26,7 +26,6 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
-
 resource "aws_spot_instance_request" "elk_spot_instance" {
   ami                         = "${var.ami_id}"
   spot_price                  = "0.0140"
@@ -48,6 +47,7 @@ resource "aws_spot_instance_request" "elk_spot_instance" {
     Name = "elk-server"
   }
 }
+
 resource "aws_spot_instance_request" "cp_dev_server" {
   ami                         = "${var.ami_id}"
   spot_price                  = "0.0040"
@@ -83,14 +83,17 @@ resource "aws_spot_instance_request" "cp_dev_server" {
 #   security_groups             = ["${module.web_server_sg.this_security_group_id}"]
 #   subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
 
+
 #   provisioner "local-exec" {
 #     command = "aws ec2 create-tags --resources ${aws_spot_instance_request.apollo.spot_instance_id} --tags Key=Name,Value=apollo-${count.index}"
 #   }
+
 
 #   tags {
 #     Name = "apollo"
 #   }
 # }
+
 
 # resource "aws_spot_instance_request" "kube" {
 #   ami                         = "${var.ami_id}"
@@ -105,11 +108,14 @@ resource "aws_spot_instance_request" "cp_dev_server" {
 #   security_groups             = ["${module.web_server_sg.this_security_group_id}"]
 #   subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
 
+
 #   provisioner "local-exec" {
 #     command = "aws ec2 create-tags --resources ${self.spot_instance_id} --tags Key=Name,Value=kube-${count.index}"
 #   }
+
 
 #   tags {
 #     Name = "kube"
 #   }
 # }
+
