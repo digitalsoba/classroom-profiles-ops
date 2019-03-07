@@ -12,13 +12,13 @@
   when: stage == "dev"
   template:
     src: dev.j2
-    dest: /etc/nginx/sites-available/{{ env }}
+    dest: /etc/nginx/sites-available/{{ stage }}
 
-- name: Copy dev nginx config 
+- name: Copy production nginx config 
   when: stage == "prod"
   template:
     src: prod.j2
-    dest: /etc/nginx/sites-available/{{ env }}
+    dest: /etc/nginx/sites-available/{{ stage }}
 
 - name: Remove default syslink
   file:
@@ -27,7 +27,7 @@
 
 - name: Create syslink
   file:
-    src: /etc/nginx/sites-available/{{ env }}
-    dest: /etc/nginx/sites-enabled/{{ env }}
+    src: /etc/nginx/sites-available/{{ stage }}
+    dest: /etc/nginx/sites-enabled/{{ stage }}
     state: link
   notify: restart nginx

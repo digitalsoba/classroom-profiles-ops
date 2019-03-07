@@ -1,35 +1,44 @@
 ---
-- name: Clone project
+- name: Clone dev project
+  when: stage == "dev"
   git:
     repo: https://github.com/CSUN-Comp490/classroom-profiles.git
-    dest: /var/www/{{ env }}/laravel
+    dest: /var/www/{{ stage }}/laravel
+    version: dev
+
+- name: Clone master project
+  when: stage == "prod"
+  git:
+    repo: https://github.com/CSUN-Comp490/classroom-profiles.git
+    dest: /var/www/{{ stage }}/laravel
+    version: master
 
 - name: Composer install
   composer:
     command: install
-    working_dir: /var/www/{{ env }}/laravel
+    working_dir: /var/www/{{ stage }}/laravel
 
 - name: Copy .env file
   command: cp .env.example .env 
   args:
-    chdir: /var/www/{{ env }}/laravel
+    chdir: /var/www/{{ stage }}/laravel
 
 - name: Generate app key
   command: php artisan key:generate
   args:
-    chdir: /var/www/{{ env }}/laravel
+    chdir: /var/www/{{ stage }}/laravel
 
 - name: Change laravel permission
   file:
-    path: /var/www/{{ env }}/laravel
+    path: /var/www/{{ stage }}/laravel
     owner: www-data
     group: www-data
     recurse: yes
 
 - name: Create symlink
   file:
-    src: /var/www/{{ env }}/laravel/public
-    dest: /var/www/{{ env }}/public
+    src: /var/www/{{ stage }}/laravel/public
+    dest: /var/www/{{ stage }}/public
     state: link
 
 - name: Restart nginx

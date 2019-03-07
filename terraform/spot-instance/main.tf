@@ -119,3 +119,26 @@ resource "aws_spot_instance_request" "cp_dev_server" {
 #   }
 # }
 
+resource "aws_spot_instance_request" "ansible" {
+  ami                         = "${var.ami_id}"
+  spot_price                  = "0.0040"
+  instance_type               = "t2.micro"
+  key_name                    = "${var.key_name}"
+  monitoring                  = true
+  associate_public_ip_address = true
+  count                       = 1
+  wait_for_fulfillment        = true
+  user_data                   = "${file("../cloud-init.conf")}"
+  security_groups             = ["${module.web_server_sg.this_security_group_id}"]
+  subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
+
+
+  provisioner "local-exec" {
+    command = "aws ec2 create-tags --resources ${aws_spot_instance_request.ansible.spot_instance_id} --tags Key=Name,Value=ansible-${count.index}"
+  }
+
+
+  tags {
+    Name = "ansible"
+  }
+}

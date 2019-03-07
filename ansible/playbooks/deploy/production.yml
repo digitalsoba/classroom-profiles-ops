@@ -3,8 +3,11 @@
   hosts: prod
   vars:
     stage: prod
+    domain: matabit.org
+    email: dev@anthonyinlavong.com
   become: true
   roles:
     - nginx
     - php-nginx
     - deploy-project
+    - letsencrypt
