@@ -2,9 +2,9 @@
 - name: Install Laravel dependencies
   hosts: dev
   vars:
-    env: dev
+    stage: dev
   become: true
   roles:
-    - nginx
-    - php-nginx
+    - apache
+    - php-apache
     - deploy-project

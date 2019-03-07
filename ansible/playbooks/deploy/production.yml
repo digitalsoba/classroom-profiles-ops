@@ -1,8 +1,10 @@
 ---
 - name: Install Laravel dependencies
-  hosts: all
+  hosts: prod
+  vars:
+    stage: prod
   become: true
   roles:
-    - apache
-    - php-apache
+    - nginx
+    - php-nginx
     - deploy-project

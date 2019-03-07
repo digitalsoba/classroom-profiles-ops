@@ -8,9 +8,16 @@
     name: nginx
     state: present 
 
-- name: Copy nginx config
+- name: Copy dev nginx config 
+  when: stage == "dev"
   template:
-    src: laravel.j2
+    src: dev.j2
+    dest: /etc/nginx/sites-available/{{ env }}
+
+- name: Copy dev nginx config 
+  when: stage == "prod"
+  template:
+    src: prod.j2
     dest: /etc/nginx/sites-available/{{ env }}
 
 - name: Remove default syslink
