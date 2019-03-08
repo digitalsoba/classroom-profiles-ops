@@ -1,7 +1,11 @@
 ---
 - name: Deploy ELK Stack
   hosts: elk
+  vars:
+    domain : elk.matabit.org
+    email: dev@anthonyinlavong.com
   become: true
   roles:
     - elk
     - elk-load
+    - letsencrypt

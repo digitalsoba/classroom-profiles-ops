@@ -73,6 +73,11 @@
     port: 9200
     delay: 60
 
+- name: Add htpassword.users files
+  copy:
+    src: htpasswd.users
+    dest: /etc/nginx/htpasswd.users
+
 - name: Add nginx kibana proxy template
   template: 
     src: nginx.default.j2

@@ -28,7 +28,7 @@ data "terraform_remote_state" "vpc" {
 
 resource "aws_spot_instance_request" "elk_spot_instance" {
   ami                         = "${var.ami_id}"
-  spot_price                  = "0.0140"
+  spot_price                  = "0.0139"
   instance_type               = "t2.medium"
   key_name                    = "${var.key_name}"
   monitoring                  = true
@@ -48,9 +48,9 @@ resource "aws_spot_instance_request" "elk_spot_instance" {
   }
 }
 
-resource "aws_spot_instance_request" "cp_dev_server" {
+resource "aws_spot_instance_request" "classroom-profiles" {
   ami                         = "${var.ami_id}"
-  spot_price                  = "0.0040"
+  spot_price                  = "0.0035"
   instance_type               = "t2.micro"
   key_name                    = "${var.key_name}"
   monitoring                  = true
@@ -62,13 +62,37 @@ resource "aws_spot_instance_request" "cp_dev_server" {
   subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
 
   provisioner "local-exec" {
-    command = "aws ec2 create-tags --resources ${aws_spot_instance_request.cp_dev_server.spot_instance_id} --tags Key=Name,Value=cp-dev-server-${count.index}"
+    command = "aws ec2 create-tags --resources ${aws_spot_instance_request.classroom-profiles.spot_instance_id} --tags Key=Name,Value=cp-dev-server-${count.index}"
   }
 
   tags {
-    Name = "cp_dev_server"
+    Name = "classroom-profiles"
   }
 }
+
+# resource "aws_spot_instance_request" "ansible" {
+#   ami                         = "${var.ami_id}"
+#   spot_price                  = "0.0040"
+#   instance_type               = "t2.micro"
+#   key_name                    = "${var.key_name}"
+#   monitoring                  = true
+#   associate_public_ip_address = true
+#   count                       = 1
+#   wait_for_fulfillment        = true
+#   user_data                   = "${file("../cloud-init.conf")}"
+#   security_groups             = ["${module.web_server_sg.this_security_group_id}"]
+#   subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
+
+
+#   provisioner "local-exec" {
+#     command = "aws ec2 create-tags --resources ${aws_spot_instance_request.ansible.spot_instance_id} --tags Key=Name,Value=ansible-${count.index}"
+#   }
+
+
+#   tags {
+#     Name = "ansible"
+#   }
+# }
 
 # resource "aws_spot_instance_request" "apollo" {
 #   ami                         = "${var.ami_id}"
@@ -118,27 +142,3 @@ resource "aws_spot_instance_request" "cp_dev_server" {
 #     Name = "kube"
 #   }
 # }
-
-resource "aws_spot_instance_request" "ansible" {
-  ami                         = "${var.ami_id}"
-  spot_price                  = "0.0040"
-  instance_type               = "t2.micro"
-  key_name                    = "${var.key_name}"
-  monitoring                  = true
-  associate_public_ip_address = true
-  count                       = 1
-  wait_for_fulfillment        = true
-  user_data                   = "${file("../cloud-init.conf")}"
-  security_groups             = ["${module.web_server_sg.this_security_group_id}"]
-  subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
-
-
-  provisioner "local-exec" {
-    command = "aws ec2 create-tags --resources ${aws_spot_instance_request.ansible.spot_instance_id} --tags Key=Name,Value=ansible-${count.index}"
-  }
-
-
-  tags {
-    Name = "ansible"
-  }
-}

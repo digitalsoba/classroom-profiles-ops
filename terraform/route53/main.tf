@@ -44,20 +44,12 @@ resource "aws_route53_record" "db" {
   records = ["${var.rds_address}"]
 }
 
-# resource "aws_route53_record" "apollo" {
-#   zone_id = "${aws_route53_zone.zone.zone_id}"
-#   name = "apollo"
-#   type = "A"
-#   ttl = "300"
-#   records = ["${data.terraform_remote_state.spot_instance.apollo_spot_ip}"]
-# }
-
 resource "aws_route53_record" "dev" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
   name    = "dev"
   type    = "A"
   ttl     = "300"
-  records = ["${var.gcp_compute_ip}"]
+  records = ["${data.terraform_remote_state.spot_instance.cp_spot_ip}"]
 }
 
 resource "aws_route53_record" "prod" {
@@ -65,7 +57,7 @@ resource "aws_route53_record" "prod" {
   name    = "matabit.org"
   type    = "A"
   ttl     = "300"
-  records = ["${var.gcp_compute_ip}"]
+  records = ["${data.terraform_remote_state.spot_instance.cp_spot_ip}"]
 }
 
 # resource "aws_route53_record" "dev" {
@@ -90,4 +82,12 @@ resource "aws_route53_record" "prod" {
 #     zone_id                = "${data.terraform_remote_state.ecr_ecs.alb_zone_id}"
 #     evaluate_target_health = true
 #   }
+# }
+
+# resource "aws_route53_record" "apollo" {
+#   zone_id = "${aws_route53_zone.zone.zone_id}"
+#   name = "apollo"
+#   type = "A"
+#   ttl = "300"
+#   records = ["${data.terraform_remote_state.spot_instance.apollo_spot_ip}"]
 # }
