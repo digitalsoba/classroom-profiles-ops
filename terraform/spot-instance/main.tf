@@ -62,7 +62,7 @@ resource "aws_spot_instance_request" "classroom-profiles" {
   subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
 
   provisioner "local-exec" {
-    command = "aws ec2 create-tags --resources ${aws_spot_instance_request.classroom-profiles.spot_instance_id} --tags Key=Name,Value=cp-dev-server-${count.index}"
+    command = "aws ec2 create-tags --resources ${aws_spot_instance_request.classroom-profiles.spot_instance_id} --tags Key=Name,Value=cp-server-${count.index}"
   }
 
   tags {
