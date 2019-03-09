@@ -18,6 +18,18 @@
     command: install
     working_dir: /var/www/{{ stage }}/laravel
 
+- name: Copy prod .env
+  when: stage == "prod"
+  copy:
+    src: prod
+    dest: /var/www/{{ stage }}/laravel/.env
+
+- name: Copy dev .env
+  when: stage == "prod"
+  copy:
+    src: dev
+    dest: /var/www/{{ stage }}/laravel/.env    
+    
 - name: Copy .env file
   command: cp .env.example .env 
   args:
