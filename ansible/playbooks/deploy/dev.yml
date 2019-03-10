@@ -3,11 +3,8 @@
   hosts: dev
   vars:
     stage: dev
-    domain: dev.matabit.org
-    email: dev@anthonyinlavong.com
   become: true
   roles:
     - nginx
     - php-nginx
     - deploy-project
-    - letsencrypt

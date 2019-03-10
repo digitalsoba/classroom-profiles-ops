@@ -1,0 +1,9 @@
+---
+- name: Generate SSL cert
+  hosts: apollo
+  vars:
+    domain: dev.matabit.org
+    email: dev@anthonyinlavong.com
+  become: true
+  roles:
+    - letsencrypt
