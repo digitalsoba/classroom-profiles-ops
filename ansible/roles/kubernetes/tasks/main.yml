@@ -12,10 +12,11 @@
 
 - name: install kubelet
   apt:
-    name: "{{ packages }}"
+    name: kubelet=1.13.4-00
     state: present
     update_cache: true
-  vars:
-    packages:
-        - kubelet
-        - kubeadmin
+
+- name: install kubeadm=1.13.0
+  apt: 
+    name: kubeadm=1.13.4-00
+    state: present

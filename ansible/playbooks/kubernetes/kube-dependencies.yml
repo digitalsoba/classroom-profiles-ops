@@ -6,3 +6,11 @@
     - add-users
     - docker
     - kubernetes
+- hosts: master
+  become: yes
+  tasks:
+   - name: install kubectl
+     apt:
+       name: kubectl=1.13.4-00
+       state: present
+       force: yes

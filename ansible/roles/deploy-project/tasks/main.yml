@@ -28,12 +28,7 @@
   when: stage == "prod"
   copy:
     src: dev
-    dest: /var/www/{{ stage }}/laravel/.env    
-    
-- name: Copy .env file
-  command: cp .env.example .env 
-  args:
-    chdir: /var/www/{{ stage }}/laravel
+    dest: /var/www/{{ stage }}/laravel/.env        
 
 - name: Generate app key
   command: php artisan key:generate

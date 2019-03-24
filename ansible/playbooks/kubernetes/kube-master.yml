@@ -1,30 +1,32 @@
 ---
-- name: Install cluster dependencies
-  hosts: master
-  become: true
+- hosts: master
+  become: yes
   tasks:
-    - name: Install kubectl
-      apt: 
-        name: kubectl
-        state: present
     - name: initialize the cluster
-      shell: kubeadm init --pod-network-cidr=10.244.0.0/16 >> cluster_initialized.txt
+      shell: kubeadm init --pod-network-cidr=192.168.0.0/16 >> cluster_initialized.txt
       args:
         chdir: $HOME
         creates: cluster_initialized.txt
+
     - name: create .kube directory
+      become: yes
+      become_user: anthony
       file:
         path: $HOME/.kube
         state: directory
         mode: 0755
+
     - name: copy admin.conf to user's kube config
       copy:
-        src: /etc/kubernetes/admin.config
+        src: /etc/kubernetes/admin.conf
         dest: /home/anthony/.kube/config
         remote_src: yes
         owner: anthony
-    - name: install pod netowrk
-      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml >> pod_network_setup.txt
+
+    - name: install Pod network
+      become: yes
+      become_user: anthony
+      shell: kubectl apply -f https://docs.projectcalico.org/v3.6/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml >> pod_network_setup.txt
       args:
         chdir: $HOME
         creates: pod_network_setup.txt
