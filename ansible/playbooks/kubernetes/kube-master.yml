@@ -1,12 +1,15 @@
 ---
-- hosts: master
+- hosts: all
   become: yes
   tasks:
+    - name: install kubectl
+      apt:
+        name: kubectl=1.14.0-00
+        state: present
+        update_cache: yes
+        
     - name: initialize the cluster
-      shell: kubeadm init --pod-network-cidr=192.168.0.0/16 >> cluster_initialized.txt
-      args:
-        chdir: $HOME
-        creates: cluster_initialized.txt
+      shell: kubeadm init --pod-network-cidr=192.168.0.0/16
 
     - name: create .kube directory
       become: yes
@@ -30,3 +33,8 @@
       args:
         chdir: $HOME
         creates: pod_network_setup.txt
+
+    - name: remove taint
+      become: yes
+      become_user: anthony
+      shell: kubectl taint nodes --all node-role.kubernetes.io/master-

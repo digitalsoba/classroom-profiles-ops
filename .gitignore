@@ -13,7 +13,7 @@
 # Ansible 
 *.retry
 hosts.ini
-
+hosts
 # Environment files
 *.env
 
