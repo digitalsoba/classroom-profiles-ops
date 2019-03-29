@@ -1,4 +1,4 @@
-data "aws_ami" "ubuntu" {
+data "aws_ami" "ubuntu_18_latest" {
   most_recent = true
 
   filter {
@@ -12,11 +12,6 @@ data "aws_ami" "ubuntu" {
   }
 
   owners = ["099720109477"] # Canonical
-}
-
-variable "latest_ami_id" {
-  description = "Latest AMI ID for spot instance (ubuntu 18.04 us-west-2)"
-  default     = "$${data.aws_ami.ubuntu.name}"
 }
 
 variable "ami_id" {
