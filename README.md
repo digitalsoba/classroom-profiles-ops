@@ -19,3 +19,4 @@ Welcome to the infrastructure repo for my senior design project. Terraform is us
 - Install Drone CI
 - Install Laravel + Deploy classroom profiles project
 - Various roles for automation
+- Kubernetes Cluster (Master + Worker nodes)
