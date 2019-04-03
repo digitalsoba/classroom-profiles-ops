@@ -65,6 +65,16 @@ module "elk_sg" {
 
   ingress_with_cidr_blocks = [
     {
+      from_port   = 8200
+      to_port     = 8200
+      protocol    = "tcp"
+      description = "APM server"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
+
+  ingress_with_cidr_blocks = [
+    {
       from_port   = 5044
       to_port     = 5044
       protocol    = "tcp"
