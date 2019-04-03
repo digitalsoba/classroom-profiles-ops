@@ -18,7 +18,7 @@
   authorized_key: 
     user: anthony
     state: present
-    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    key: https://github.com/digitalsoba.keys
 
 - name: Sudoless password
   lineinfile:
