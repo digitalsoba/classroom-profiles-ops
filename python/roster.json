@@ -1,0 +1,38 @@
+{
+	"status": "200",
+	"success": "true",
+	"version": "roster-2.0",
+	"type": "membership-classes",
+	"members_uid": null,
+	"members_id": "103338987",
+	"first_name": "M'benda",
+	"middle_name": null,
+	"last_name": "N'dour",
+	"display_name": "M'benda N'dour",
+	"email": "nr_mbenda.ndour.487@my.csun.edu",
+	"confidential": "no",
+	"classes": [
+		{
+			"title": "META DEVELOPMENT A",
+			"term": "Spring-2019",
+			"class_number": "16087",
+			"subject": "COMP",
+			"catalog_number": "282",
+			"section_number": "00",
+			"position": "Senior",
+			"ad_hoc_member": "no",
+			"confidential": "no"
+		},
+		{
+			"title": "META DEVELOPMENT A",
+			"term": "Spring-2019",
+			"class_number": "16544",
+			"subject": "COMP",
+			"catalog_number": "583",
+			"section_number": "00",
+			"position": "Senior",
+			"ad_hoc_member": "no",
+			"confidential": "no"
+		}
+	]
+}
