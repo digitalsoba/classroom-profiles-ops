@@ -26,27 +26,27 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
-resource "aws_spot_instance_request" "elk_spot_instance" {
-  ami                         = "${data.aws_ami.ubuntu_18_latest.id}"
-  spot_price                  = "0.0139"
-  instance_type               = "t2.medium"
-  key_name                    = "${var.key_name}"
-  monitoring                  = true
-  associate_public_ip_address = true
-  count                       = 1
-  wait_for_fulfillment        = true
-  user_data                   = "${file("../cloud-init.conf")}"
-  security_groups             = ["${module.elk_sg.this_security_group_id}"]
-  subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
+# resource "aws_spot_instance_request" "elk_spot_instance" {
+#   ami                         = "${data.aws_ami.ubuntu_18_latest.id}"
+#   spot_price                  = "0.0139"
+#   instance_type               = "t2.medium"
+#   key_name                    = "${var.key_name}"
+#   monitoring                  = true
+#   associate_public_ip_address = true
+#   count                       = 1
+#   wait_for_fulfillment        = true
+#   user_data                   = "${file("../cloud-init.conf")}"
+#   security_groups             = ["${module.elk_sg.this_security_group_id}"]
+#   subnet_id                   = "${data.terraform_remote_state.vpc.public_subnet_a}"
 
-  provisioner "local-exec" {
-    command = "aws ec2 create-tags --resources ${aws_spot_instance_request.elk_spot_instance.spot_instance_id} --tags Key=Name,Value=elk-server-${count.index}"
-  }
+#   provisioner "local-exec" {
+#     command = "aws ec2 create-tags --resources ${aws_spot_instance_request.elk_spot_instance.spot_instance_id} --tags Key=Name,Value=elk-server-${count.index}"
+#   }
 
-  tags {
-    Name = "elk-server"
-  }
-}
+#   tags {
+#     Name = "elk-server"
+#   }
+# }
 
 resource "aws_spot_instance_request" "classroom-profiles" {
   ami                         = "${var.ami_id}"

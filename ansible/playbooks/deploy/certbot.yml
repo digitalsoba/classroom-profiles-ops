@@ -2,7 +2,7 @@
 - name: Generate SSL cert
   hosts: all
   vars:
-    domain: dev.matabit.org
+    domain: matabit.org
     email: dev@anthonyinlavong.com
   become: true
   roles:

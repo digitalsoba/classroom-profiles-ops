@@ -5,11 +5,11 @@
   apt: 
     name: software-properties-common 
     state: latest
-
-- name: Install Java repo
-  apt_repository:
-    repo: ppa:webupd8team/java
-    state: present
+  vars:
+    packages:
+        - apt-transport-https
+        - openjdk-11-jdk
+        - software-properties-common 
 
 - name: Add Elastic GPG key
   apt_key:
@@ -18,16 +18,8 @@
 
 - name: Add Elastic source list
   apt_repository:
-    repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
     state: present
-
-- name: Accept Java 8 License
-  become: yes
-  debconf: 
-    name: 'oracle-java8-installer' 
-    question: 'shared/accepted-oracle-license-v1-1' 
-    value: 'true' 
-    vtype: 'select'
 
 - name: Update apt cache and install stack
   apt:
@@ -35,7 +27,6 @@
     name: "{{ packages }}"
   vars:
     packages:
-      - oracle-java8-installer
       - elasticsearch
       - kibana
       - nginx

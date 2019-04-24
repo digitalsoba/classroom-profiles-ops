@@ -67,7 +67,7 @@ EOF
 
 resource "aws_lambda_function" "roster-api" {
   filename      = "lambda_function.py.zip"
-  function_name = "fake-roster-api"
+  function_name = "terraform-roster-api"
   role          = "${aws_iam_role.read-matabit-api-s3.arn}"
   handler       = "lambda_function.lambda_handler"
 
