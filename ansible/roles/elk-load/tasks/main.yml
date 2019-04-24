@@ -13,7 +13,6 @@
   command: filebeat modules enable "{{ item }}"
   with_items:
     - system
-    - apache2
     - nginx
 
 - name: Load filebeat index and dashboard

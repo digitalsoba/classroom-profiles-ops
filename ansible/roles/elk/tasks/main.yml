@@ -1,9 +1,9 @@
 ---
 
-- name: Install add-apt-repostory
+- name: Install pre-requisites
   become: yes
   apt: 
-    name: software-properties-common 
+    name: "{{ packages }}"
     state: latest
   vars:
     packages:
@@ -18,7 +18,7 @@
 
 - name: Add Elastic source list
   apt_repository:
-    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
     state: present
 
 - name: Update apt cache and install stack
