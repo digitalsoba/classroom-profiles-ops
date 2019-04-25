@@ -28,7 +28,7 @@ data "terraform_remote_state" "vpc" {
 
 resource "aws_spot_instance_request" "elk_spot_instance" {
   ami                         = "${data.aws_ami.ubuntu_18_latest.id}"
-  spot_price                  = "0.0139"
+  spot_price                  = "0.02"
   instance_type               = "t2.medium"
   key_name                    = "${var.key_name}"
   monitoring                  = true

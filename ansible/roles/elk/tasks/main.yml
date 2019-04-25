@@ -3,12 +3,13 @@
 - name: Install pre-requisites
   become: yes
   apt: 
+    update_cache: yes
     name: "{{ packages }}"
     state: latest
   vars:
     packages:
         - apt-transport-https
-        - openjdk-11-jdk
+        - openjdk-8-jdk
         - software-properties-common 
 
 - name: Add Elastic GPG key

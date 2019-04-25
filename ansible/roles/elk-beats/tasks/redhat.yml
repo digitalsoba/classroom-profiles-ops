@@ -6,7 +6,7 @@
 
 - name: Add Elastic repo
   yum_repository:
-    name: Elastic 
+    name: elastic
     description: repository for 6.x packages
     baseurl: https://artifacts.elastic.co/packages/6.x/yum
     gpgcheck: yes
