@@ -30,4 +30,3 @@
     src: /etc/nginx/sites-available/{{ stage }}
     dest: /etc/nginx/sites-enabled/{{ stage }}
     state: link
-  notify: restart nginx

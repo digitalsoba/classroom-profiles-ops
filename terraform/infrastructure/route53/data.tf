@@ -18,16 +18,6 @@ data "terraform_remote_state" "rds" {
   }
 }
 
-data "terraform_remote_state" "ecr_ecs" {
-  backend = "s3"
-
-  config {
-    bucket = "matabit-terraform-backend"
-    region = "us-west-2"
-    key    = "ecr_ecs/terraform.tfstate"
-  }
-}
-
 data "terraform_remote_state" "spot_instance" {
   backend = "s3"
 
@@ -35,5 +25,15 @@ data "terraform_remote_state" "spot_instance" {
     bucket = "matabit-terraform-backend"
     region = "us-west-2"
     key    = "spot-instance/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "lightsail" {
+  backend = "s3"
+
+  config {
+    bucket = "matabit-terraform-backend"
+    region = "us-west-2"
+    key = "lightsail/terraform.tfstate"
   }
 }

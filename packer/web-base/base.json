@@ -1,0 +1,23 @@
+
+{   
+  "provisioners": [
+      {
+          "type": "shell",
+          "script": "provision.sh"
+      },
+      {
+          "type": "ansible-local",
+          "playbook_file": "playbook.yml" 
+      }
+  ],
+  "builders": [{
+      "type": "amazon-ebs",
+      "region": "us-west-2",
+      "source_ami": "ami-005bdb005fb00e791",
+      "instance_type": "t2.micro",
+      "vpc_id": "vpc-0ed49947d62b340f4",
+      "subnet_id": "subnet-054f9f72fa46bc5f0",
+      "ssh_username": "ubuntu",
+      "ami_name": "base-web {{timestamp}}"
+  }]
+}

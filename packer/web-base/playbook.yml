@@ -1,0 +1,57 @@
+---
+- name: Run the playbook tasks on the localhost
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  tasks: 
+    - name: Update the repository cache on Ubuntu
+      apt: 
+        update_cache: true
+    - name: Install nginx
+      apt: 
+        name: nginx
+        state: present 
+    - name: Install php-nginx modules
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+          - composer
+          - php7.2 
+          - php7.2-curl 
+          - php7.2-common 
+          - php7.2-cli 
+          - php7.2-mysql 
+          - php7.2-mbstring 
+          - php7.2-fpm 
+          - php7.2-xml 
+          - php7.2-zip 
+          - php7.2-ldap
+          - unzip
+          - zip
+
+    - name: Change php7.2-fpm cgi.fix_pathinfo=0
+      lineinfile: 
+        path: /etc/php/7.2/fpm/php.ini 
+        regexp: '^(.*)cgi.fix_pathinfo=' 
+        line: cgi.fix_pathinfo=0
+      notify: 
+      - restart php7.2-fpm
+      - enable php7.2-fpm
+      - name: restart php7.2-fpm
+  handlers:
+    - name: restart php7.2-fpm
+      service:
+        name: php7.2-fpm
+        state: restarted
+    - name: enable php7.2-fpm
+      service:
+        name: php7.2-fpm
+        state: started
+        enabled: true
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted 
+    

@@ -13,7 +13,6 @@
     createhome: yes
   with_items:
     - anthony
-    - envoy
   
 - name: Set pubkey for anthony
   authorized_key: 

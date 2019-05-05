@@ -2,7 +2,7 @@ module "web_server_sg" {
   source = "terraform-aws-modules/security-group/aws"
 
   name        = "web-sg"
-  description = "Security group for ELK with HTTPS/Logstash/Kibana/Elasticsearch ports open within VPC"
+  description = "Security group for Web servers: Allows 22,80,443"
   vpc_id      = "${data.terraform_remote_state.vpc.vpc_id}"
 
   egress_with_cidr_blocks = [
