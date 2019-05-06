@@ -33,7 +33,7 @@ resource "aws_route53_record" "elk" {
   name    = "elk"
   type    = "A"
   ttl     = "300"
-  records = ["${data.terraform_remote_state.spot_instance.elk_spot_ip}"]
+  records = ["${data.terraform_remote_state.lightsail.elk_ip}"]
 }
 
 resource "aws_route53_record" "db" {

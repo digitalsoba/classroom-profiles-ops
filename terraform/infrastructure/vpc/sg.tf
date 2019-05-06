@@ -3,7 +3,7 @@ module "web_server_sg" {
 
   name        = "web-sg"
   description = "Security group for Web servers: Allows 22,80,443"
-  vpc_id      = "${data.terraform_remote_state.vpc.vpc_id}"
+  vpc_id      = "${aws_vpc.matabit_vpc.id}"
 
   egress_with_cidr_blocks = [
     {
@@ -51,7 +51,7 @@ module "elk_sg" {
 
   name        = "elk-sg"
   description = "Security group for ELK with HTTPS/Logstash/Kibana/Elasticsearch ports open within VPC"
-  vpc_id      = "${data.terraform_remote_state.vpc.vpc_id}"
+  vpc_id      = "${aws_vpc.matabit_vpc.id}"
 
   egress_with_cidr_blocks = [
     {
@@ -79,16 +79,6 @@ module "elk_sg" {
       to_port     = 5044
       protocol    = "tcp"
       description = "Logstash"
-      cidr_blocks = "0.0.0.0/0"
-    },
-  ]
-
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 5601
-      to_port     = 5601
-      protocol    = "tcp"
-      description = "Kibana"
       cidr_blocks = "0.0.0.0/0"
     },
   ]
